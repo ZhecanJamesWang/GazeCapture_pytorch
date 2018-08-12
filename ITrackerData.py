@@ -72,7 +72,7 @@ class ITrackerData(data.Dataset):
         print('Loading iTracker dataset...')
         self.metadata = loadMetadata(META_PATH)
 
-        print （type(self.metadata)）
+        print (type(self.metadata))
         raise "debug"
 
         self.faceMean = loadMetadata(os.path.join(MEAN_PATH, 'mean_face_224.mat'))['image_mean']
