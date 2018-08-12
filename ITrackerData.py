@@ -12,7 +12,7 @@ import re
 Data loader for the iTracker.
 Modify to fit your data format.
 
-Author: Petr Kellnhofer ( pkel_lnho (at) gmai_l.com // remove underscores and spaces), 2018. 
+Author: Petr Kellnhofer ( pkel_lnho (at) gmai_l.com // remove underscores and spaces), 2018.
 
 Website: http://gazecapture.csail.mit.edu/
 
@@ -31,7 +31,7 @@ Booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}
 
 '''
 
-DATASET_PATH = '[NOT SET]'
+DATASET_PATH = "..\Eye-Tracking-for-Everyone-master\Eye-Tracking-for-Everyone-master\GazeCapture"
 MEAN_PATH = './'
 META_PATH = './metadata.mat'
 
@@ -59,7 +59,7 @@ class SubtractMean(object):
             tensor (Tensor): Tensor image of size (C, H, W) to be normalized.
         Returns:
             Tensor: Normalized image.
-        """       
+        """
         return tensor.sub(self.meanImg)
 
 
@@ -74,7 +74,7 @@ class ITrackerData(data.Dataset):
         self.faceMean = loadMetadata(os.path.join(MEAN_PATH, 'mean_face_224.mat'))['image_mean']
         self.eyeLeftMean = loadMetadata(os.path.join(MEAN_PATH, 'mean_left_224.mat'))['image_mean']
         self.eyeRightMean = loadMetadata(os.path.join(MEAN_PATH, 'mean_right_224.mat'))['image_mean']
-        
+
 
         self.transformFace = transforms.Compose([
             transforms.Scale(self.imSize),
@@ -116,11 +116,11 @@ class ITrackerData(data.Dataset):
     def makeGrid(self, params):
         gridLen = self.gridSize[0] * self.gridSize[1]
         grid = np.zeros([gridLen,], np.float32)
-        
+
         indsY = np.array([i // self.gridSize[0] for i in range(gridLen)])
         indsX = np.array([i % self.gridSize[0] for i in range(gridLen)])
-        condX = np.logical_and(indsX >= params[0], indsX < params[0] + params[2]) 
-        condY = np.logical_and(indsY >= params[1], indsY < params[1] + params[3]) 
+        condX = np.logical_and(indsX >= params[0], indsX < params[0] + params[2])
+        condY = np.logical_and(indsY >= params[1], indsY < params[1] + params[3])
         cond = np.logical_and(condX, condY)
 
         grid[cond] = 1
@@ -151,7 +151,7 @@ class ITrackerData(data.Dataset):
         gaze = torch.FloatTensor(gaze)
 
         return row, imFace, imEyeL, imEyeR, faceGrid, gaze
-    
-        
+
+
     def __len__(self):
         return len(self.indices)

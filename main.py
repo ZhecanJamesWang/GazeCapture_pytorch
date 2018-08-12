@@ -18,7 +18,7 @@ from ITrackerModel import ITrackerModel
 '''
 Train/test code for iTracker.
 
-Author: Petr Kellnhofer ( pkel_lnho (at) gmai_l.com // remove underscores and spaces), 2018. 
+Author: Petr Kellnhofer ( pkel_lnho (at) gmai_l.com // remove underscores and spaces), 2018.
 
 Website: http://gazecapture.csail.mit.edu/
 
@@ -39,8 +39,8 @@ Booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}
 
 
 # Change there flags to control what happens.
-doLoad = True # Load checkpoint at the beginning
-doTest = True # Only run test, no training
+doLoad = False # Load checkpoint at the beginning
+doTest = False # Only run test, no training
 
 workers = 8
 epochs = 100
@@ -66,7 +66,7 @@ def main():
     model = torch.nn.DataParallel(model)
     model.cuda()
     imSize=(224,224)
-    cudnn.benchmark = True   
+    cudnn.benchmark = True
 
     epoch = 0
     if doLoad:
@@ -83,10 +83,10 @@ def main():
         else:
             print('Warning: Could not read checkpoint!');
 
-    
+
     dataTrain = ITrackerData(split='train', imSize = imSize)
     dataVal = ITrackerData(split='test', imSize = imSize)
-   
+
     train_loader = torch.utils.data.DataLoader(
         dataTrain,
         batch_size=batch_size, shuffle=True,
@@ -111,7 +111,7 @@ def main():
 
     for epoch in range(0, epoch):
         adjust_learning_rate(optimizer, epoch)
-        
+
     for epoch in range(epoch, epochs):
         adjust_learning_rate(optimizer, epoch)
 
@@ -143,7 +143,7 @@ def train(train_loader, model, criterion,optimizer, epoch):
     end = time.time()
 
     for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(train_loader):
-        
+
         # measure data loading time
         data_time.update(time.time() - end)
         imFace = imFace.cuda(async=True)
@@ -151,7 +151,7 @@ def train(train_loader, model, criterion,optimizer, epoch):
         imEyeR = imEyeR.cuda(async=True)
         faceGrid = faceGrid.cuda(async=True)
         gaze = gaze.cuda(async=True)
-        
+
         imFace = torch.autograd.Variable(imFace)
         imEyeL = torch.autograd.Variable(imEyeL)
         imEyeR = torch.autograd.Variable(imEyeR)
@@ -162,7 +162,7 @@ def train(train_loader, model, criterion,optimizer, epoch):
         output = model(imFace, imEyeL, imEyeR, faceGrid)
 
         loss = criterion(output, gaze)
-        
+
         losses.update(loss.data[0], imFace.size(0))
 
         # compute gradient and do SGD step
@@ -204,7 +204,7 @@ def validate(val_loader, model, criterion, epoch):
         imEyeR = imEyeR.cuda(async=True)
         faceGrid = faceGrid.cuda(async=True)
         gaze = gaze.cuda(async=True)
-        
+
         imFace = torch.autograd.Variable(imFace, volatile = True)
         imEyeL = torch.autograd.Variable(imEyeL, volatile = True)
         imEyeR = torch.autograd.Variable(imEyeR, volatile = True)
@@ -215,7 +215,7 @@ def validate(val_loader, model, criterion, epoch):
         output = model(imFace, imEyeL, imEyeR, faceGrid)
 
         loss = criterion(output, gaze)
-        
+
         lossLin = output - gaze
         lossLin = torch.mul(lossLin,lossLin)
         lossLin = torch.sum(lossLin,1)
@@ -223,7 +223,7 @@ def validate(val_loader, model, criterion, epoch):
 
         losses.update(oss.data[0], imFace.size(0))
         lossesLin.update(lossLin.data[0], imFace.size(0))
-     
+
         # compute gradient and do SGD step
         # measure elapsed time
         batch_time.update(time.time() - end)
