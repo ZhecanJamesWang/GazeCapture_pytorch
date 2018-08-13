@@ -23,9 +23,7 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 
 		# frame name
 		frame = img_name[6:]
-
-		print (frame)
-		raise "debug"
+		print ("frame: ", frame)
 
 		# index of the frame into a sequence
 		idx = int(frame[:-4])
@@ -109,11 +107,11 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 			path = join(path, dir) + folder
 			check_and_make_dir(path)
 
-		cv2.imwrite("images/face.png", face)
-		cv2.imwrite("images/right.png", right_eye)
-		cv2.imwrite("images/left.png", left_eye)
-		cv2.imwrite("images/image.png", img)
-
+		cv2.imwrite(join(path, dir, "appleFace", frame), face)
+		cv2.imwrite(join(path, dir, "appleRightEye", frame), right_eye)
+		cv2.imwrite(join(path, dir, "appleLeftEye", frame), left_eye)
+		# cv2.imwrite("images/image.png", img)
+		raise "debug"
 
 # create a list of all names of images in the dataset
 def load_data_names(path):
@@ -122,7 +120,6 @@ def load_data_names(path):
 	seqs = sorted(glob.glob(join(path, "0*")))
 
 	for seq in seqs:
-
 		file = open(seq, "r")
 		content = file.read().splitlines()
 		for line in content:
