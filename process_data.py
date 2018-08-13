@@ -130,6 +130,13 @@ def load_data_names(path):
 
 	return seq_list
 
+
+
+
+img_cols = 64
+img_rows = 64
+img_ch = 3
+
 dataset_path = "..\Eye-Tracking-for-Everyone-master\Eye-Tracking-for-Everyone-master\GazeCapture"
 train_path = dataset_path + '\ '.strip() + "train"
 val_path = dataset_path + '\ '.strip() + "validation"
@@ -141,8 +148,8 @@ val_names = load_data_names(val_path)
 test_names = load_data_names(test_path)
 
 
-train_data = load_batch_from_data(train_names, dataset_path, None, img_ch, img_cols, img_rows, train_start = train_start, train_end = train_end)
+train_data = load_batch_from_data(train_names, dataset_path, None, img_ch, img_cols, img_rows)
 
-val_data = load_batch_from_data(val_names, dataset_path, None, img_ch, img_cols, img_rows, train_start = test_start, train_end = test_end)
+val_data = load_batch_from_data(val_names, dataset_path, None, img_ch, img_cols, img_rows)
 
-test_data = load_batch_from_data(test_names, dataset_path, None, img_ch, img_cols, img_rows, train_start = test_start, train_end = test_end)
+test_data = load_batch_from_data(test_names, dataset_path, None, img_ch, img_cols, img_rows)
