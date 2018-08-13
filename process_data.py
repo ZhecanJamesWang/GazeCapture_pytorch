@@ -147,6 +147,9 @@ train_names = load_data_names(train_path)
 val_names = load_data_names(val_path)
 test_names = load_data_names(test_path)
 
+print ("train_names: ", len(train_names))
+print ("val_names: ", len(val_names))
+print ("test_names: ", len(test_names))
 
 train_data = load_batch_from_data(train_names, dataset_path, None, img_ch, img_cols, img_rows)
 
