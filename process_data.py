@@ -137,7 +137,7 @@ img_cols = 64
 img_rows = 64
 img_ch = 3
 
-dataset_path = "..\Eye-Tracking-for-Everyone-master\Eye-Tracking-for-Everyone-master\GazeCapture"
+dataset_path = "..\..\Eye-Tracking-for-Everyone-master\Eye-Tracking-for-Everyone-master\GazeCapture"
 train_path = dataset_path + '\ '.strip() + "train"
 val_path = dataset_path + '\ '.strip() + "validation"
 test_path = dataset_path + '\ '.strip() + "test"
