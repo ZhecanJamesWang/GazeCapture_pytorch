@@ -4,6 +4,7 @@ import glob
 from os.path import join
 import json
 import cv2
+import numpy as np
 
 def check_and_make_dir(path):
 	if not os.path.exists(path):
