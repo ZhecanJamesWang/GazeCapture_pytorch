@@ -20,9 +20,11 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 
 		# get the lucky one
 		img_name = names[i]
+		print ("img_name: ", img_name)
 
 		# directory
 		dir = img_name[:5]
+		print ("dir: ", dir)
 
 		# frame name
 		frame = img_name[6:]
