@@ -107,8 +107,8 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 		y_y = dot_json["YCam"][idx]
 
 		for folder in ["/appleFace/", "/appleLeftEye/", "/appleRightEye/"]:
-			path = join(path, dir) + folder
-			check_and_make_dir(path)
+			p = join(path, dir) + folder
+			check_and_make_dir(p)
 
 		cv2.imwrite(join(path, dir, "appleFace", frame), face)
 		cv2.imwrite(join(path, dir, "appleRightEye", frame), right_eye)
