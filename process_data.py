@@ -3,7 +3,7 @@ import os
 
 def check_and_make_dir(path):
 	if not os.path.exists(path):
-         os.mkdir(path)
+		 os.mkdir(path)
 
 def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, train_start = None, train_end = None):
 
@@ -22,8 +22,8 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 		# frame name
 		frame = img_name[6:]
 
-        print frame
-        raise "debug"
+		print (frame)
+		raise "debug"
 
 		# index of the frame into a sequence
 		idx = int(frame[:-4])
@@ -103,9 +103,9 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 		y_x = dot_json["XCam"][idx]
 		y_y = dot_json["YCam"][idx]
 
-        for folder in ["/appleFace/", "/appleLeftEye/", "/appleRightEye/"]:
-            path = join(path, dir) + folder
-            check_and_make_dir(path)
+		for folder in ["/appleFace/", "/appleLeftEye/", "/appleRightEye/"]:
+			path = join(path, dir) + folder
+			check_and_make_dir(path)
 
 		cv2.imwrite("images/face.png", face)
 		cv2.imwrite("images/right.png", right_eye)
