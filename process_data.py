@@ -6,29 +6,33 @@ import json
 import cv2
 import numpy as np
 
+global counter = 0
+global sum = 0
+
 def check_and_make_dir(path):
 	if not os.path.exists(path):
 		 os.mkdir(path)
 
 def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, train_start = None, train_end = None):
-
+	global counter
+	global sum
 	save_img = False
-
 	for i in range(len(names)):
 		# lottery
 		# i = np.random.randint(0, len(names))
 
 		# get the lucky one
 		img_name = names[i]
-		print ("img_name: ", img_name)
+		if counter % 100 == 0:
+			print ("counter: ", counter)
+			print ("sum: ", sum)
 
+		counter += 1
 		# directory
 		dir = img_name[:5]
-		print ("dir: ", dir)
 		if int(dir) >= 153:
 			# frame name
 			frame = img_name[6:]
-			print ("frame: ", frame)
 
 			# index of the frame into a sequence
 			idx = int(frame[:-4])
@@ -152,8 +156,10 @@ test_names = load_data_names(test_path)
 print ("train_names: ", len(train_names))
 print ("val_names: ", len(val_names))
 print ("test_names: ", len(test_names))
+sum = len(train_names) + len(val_names) + len(test_names)
+print ("sum: ", sum)
 
-train_data = load_batch_from_data(train_names, dataset_path, None, img_ch, img_cols, img_rows)
+train_data = load_batch_from_data(train_names , dataset_path, None, img_ch, img_cols, img_rows)
 
 val_data = load_batch_from_data(val_names, dataset_path, None, img_ch, img_cols, img_rows)
 
