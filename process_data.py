@@ -6,8 +6,11 @@ import json
 import cv2
 import numpy as np
 
-global counter = 0
-global sum = 0
+global counter
+global sum
+
+counter = 0
+sum = 0
 
 def check_and_make_dir(path):
 	if not os.path.exists(path):
