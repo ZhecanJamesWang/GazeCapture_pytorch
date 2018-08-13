@@ -116,7 +116,7 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 		cv2.imwrite(join(path, dir, "appleRightEye", frame), right_eye)
 		cv2.imwrite(join(path, dir, "appleLeftEye", frame), left_eye)
 		# cv2.imwrite("images/image.png", img)
-		raise "debug"
+		# raise "debug"
 
 # create a list of all names of images in the dataset
 def load_data_names(path):
