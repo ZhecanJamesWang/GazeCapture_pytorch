@@ -11,7 +11,7 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 
 	save_img = False
 
-	for i in range(names):
+	for i in range(len(names)):
 		# lottery
 		# i = np.random.randint(0, len(names))
 
