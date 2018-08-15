@@ -162,6 +162,7 @@ class ITrackerData(data.Dataset):
             return row, imFace, imEyeL, imEyeR, faceGrid, gaze
 
         except Exception as e:
+            self.bad_counter += 1
             print ("self.bad_counter: ", self.bad_counter)
             print (e)
             # return None, None, None, None, None, None
