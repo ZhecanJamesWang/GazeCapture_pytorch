@@ -44,10 +44,10 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 
 
 			if os.path.isfile(join(path, dir, "appleFace", frame)):
-				print ("Skipping! Already Exists!!!!!")
+				print ("Skipping! Already Exists! **********")
 
 			else:
-				print ("Processing!!!!")
+				print ("Processing !!!!!!!!!")
 				# open json files
 				face_file = open(join(path, dir, "appleFace.json"))
 				left_file = open(join(path, dir, "appleLeftEye.json"))
