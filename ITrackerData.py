@@ -132,9 +132,9 @@ class ITrackerData(data.Dataset):
 
         index = self.indices[index]
 
-        imFacePath = os.path.join(DATASET_PATH, '%05d/appleFace/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
-        imEyeLPath = os.path.join(DATASET_PATH, '%05d/appleLeftEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
-        imEyeRPath = os.path.join(DATASET_PATH, '%05d/appleRightEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+        imFacePath = os.path.join(DATASET_PATH, '/%05d/appleFace/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+        imEyeLPath = os.path.join(DATASET_PATH, '/%05d/appleLeftEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+        imEyeRPath = os.path.join(DATASET_PATH, '/%05d/appleRightEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
 
         imFace = self.loadImage(imFacePath)
         imEyeL = self.loadImage(imEyeLPath)
