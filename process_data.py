@@ -155,6 +155,9 @@ test_path = dataset_path + '\ '.strip() + "test"
 
 
 train_names = load_data_names(train_path)
+print train_names[:10]
+raise "debug"
+
 val_names = load_data_names(val_path)
 test_names = load_data_names(test_path)
 
