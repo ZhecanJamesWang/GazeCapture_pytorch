@@ -97,7 +97,8 @@ def main():
         batch_size=batch_size, shuffle=False,
         num_workers=workers, pin_memory=True)
 
-    print "------------------------------------"
+    print ("------------------------------------")
+    
     criterion = nn.MSELoss().cuda()
 
     optimizer = torch.optim.SGD(model.parameters(), lr,
