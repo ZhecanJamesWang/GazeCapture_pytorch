@@ -136,15 +136,17 @@ class ITrackerData(data.Dataset):
         index = self.indices[index]
 
         print ("self.indices[index]: ", self.indices[index])
-
-        imFacePath = os.path.join(DATASET_PATH, '%05d/appleFace/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
-        imEyeLPath = os.path.join(DATASET_PATH, '%05d/appleLeftEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
-        imEyeRPath = os.path.join(DATASET_PATH, '%05d/appleRightEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
-
-        print ("imFacePath: ", imFacePath)
-
+        raise "debug"
+        
         while not if_load:
             try:
+
+                imFacePath = os.path.join(DATASET_PATH, '%05d/appleFace/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+                imEyeLPath = os.path.join(DATASET_PATH, '%05d/appleLeftEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+                imEyeRPath = os.path.join(DATASET_PATH, '%05d/appleRightEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+
+                print ("imFacePath: ", imFacePath)
+
                 imFace = self.loadImage(imFacePath)
                 imEyeL = self.loadImage(imEyeLPath)
                 imEyeR = self.loadImage(imEyeRPath)
@@ -170,7 +172,7 @@ class ITrackerData(data.Dataset):
                 self.bad_counter += 1
                 # print ("self.bad_counter: ", self.bad_counter)
                 # print ("self.good_counter: ", self.good_counter)
-                print (e)
+                # print (e)
                 index += 1
                 # return None, None, None, None, None, None
 
