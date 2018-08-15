@@ -57,7 +57,9 @@ lr = base_lr
 count_test = 0
 count = 0
 
-
+def my_collate(batch):
+    batch = filter (lambda x:x is not None, batch)
+    return default_collate(batch)
 
 def main():
     global args, best_prec1, weight_decay, momentum
@@ -90,7 +92,7 @@ def main():
     train_loader = torch.utils.data.DataLoader(
         dataTrain,
         batch_size=batch_size, shuffle=True,
-        num_workers=workers, pin_memory=True)
+        num_workers=workers, pin_memory=True, collate_fn=my_collate)
 
     val_loader = torch.utils.data.DataLoader(
         dataVal,
@@ -98,7 +100,7 @@ def main():
         num_workers=workers, pin_memory=True)
 
     print ("------------------------------------")
-    
+
     criterion = nn.MSELoss().cuda()
 
     optimizer = torch.optim.SGD(model.parameters(), lr,

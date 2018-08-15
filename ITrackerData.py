@@ -65,6 +65,8 @@ class SubtractMean(object):
 
 class ITrackerData(data.Dataset):
     def __init__(self, split = 'train', imSize=(224,224), gridSize=(25, 25)):
+        self.good_counter = 0
+        self.bad_counter = 0
 
         self.imSize = imSize
         self.gridSize = gridSize
@@ -155,12 +157,14 @@ class ITrackerData(data.Dataset):
             row = torch.LongTensor([int(index)])
             faceGrid = torch.FloatTensor(faceGrid)
             gaze = torch.FloatTensor(gaze)
-
+            self.good_counter += 1
+            print ("self.good_counter: ", self.good_counter)
             return row, imFace, imEyeL, imEyeR, faceGrid, gaze
 
         except Exception as e:
+            print ("self.bad_counter: ", self.bad_counter)
             print (e)
-            return None, None, None, None, None, None
+            # return None, None, None, None, None, None
 
 
     def __len__(self):
