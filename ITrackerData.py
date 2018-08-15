@@ -175,7 +175,8 @@ class ITrackerData(data.Dataset):
                 index += 1
                 # return None, None, None, None, None, None
 
-        return index, row, imFace, imEyeL, imEyeR, faceGrid, gaze
-
+        return row, imFace, imEyeL, imEyeR, faceGrid, gaze
+        # index,
+        
     def __len__(self):
         return len(self.indices)
