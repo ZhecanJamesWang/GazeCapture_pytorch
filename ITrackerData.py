@@ -109,7 +109,7 @@ class ITrackerData(data.Dataset):
         try:
             im = Image.open(path).convert('RGB')
         except Exception as e:
-            print e
+            print (e)
         # except OSError:
             # raise RuntimeError('Could not read image: ' + path)
             #im = Image.new("RGB", self.imSize, "white")
