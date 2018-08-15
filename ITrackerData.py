@@ -139,7 +139,6 @@ class ITrackerData(data.Dataset):
 
         while not if_load:
             try:
-
                 imFacePath = os.path.join(DATASET_PATH, '%05d/appleFace/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
                 imEyeLPath = os.path.join(DATASET_PATH, '%05d/appleLeftEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
                 imEyeRPath = os.path.join(DATASET_PATH, '%05d/appleRightEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
@@ -152,7 +151,7 @@ class ITrackerData(data.Dataset):
 
                 self.good_counter += 1
                 print ("self.good_counter: ", self.good_counter)
-
+                print ("load image ！！！！！！！！！！！！！！！！！！！！")
                 imFace = self.transformFace(imFace)
                 imEyeL = self.transformEyeL(imEyeL)
                 imEyeR = self.transformEyeR(imEyeR)
