@@ -42,10 +42,8 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 			# index of the frame into a sequence
 			idx = int(frame[:-4])
 
-
-			if os.path.isfile(join(path, dir, "appleFace", frame)):
+			if os.path.isdir(join(path, dir, "appleFace")):
 				print ("Skipping! Already Exists! **********")
-
 			else:
 				print ("Processing !!!!!!!!!")
 				# open json files
