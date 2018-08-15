@@ -30,7 +30,6 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 			print ("counter: ", counter)
 			print ("sum: ", sum)
 
-		print ("img_name: ", img_name)
 
 		counter += 1
 		# directory
@@ -43,8 +42,9 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 			idx = int(frame[:-4])
 
 			if os.path.isdir(join(path, dir, "appleFace")):
-				print ("Skipping! Already Exists! **********")
+				# print ("Skipping! Already Exists! **********")
 			else:
+				print ("img_name: ", img_name)
 				print ("Processing !!!!!!!!!")
 				# open json files
 				face_file = open(join(path, dir, "appleFace.json"))
