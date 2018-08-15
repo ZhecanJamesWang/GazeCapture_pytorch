@@ -130,14 +130,13 @@ class ITrackerData(data.Dataset):
 
     def __getitem__(self, index):
 
-        print ("index: ", index)
+        # print ("index: ", index)
         if_load = False
 
         index = self.indices[index]
 
-        print ("self.indices[index]: ", self.indices[index])
-        raise "debug"
-        
+        # print ("self.indices[index]: ", self.indices[index])
+
         while not if_load:
             try:
 
@@ -152,7 +151,7 @@ class ITrackerData(data.Dataset):
                 imEyeR = self.loadImage(imEyeRPath)
 
                 self.good_counter += 1
-                # print ("self.good_counter: ", self.good_counter)
+                print ("self.good_counter: ", self.good_counter)
 
                 imFace = self.transformFace(imFace)
                 imEyeL = self.transformEyeL(imEyeL)
@@ -170,8 +169,8 @@ class ITrackerData(data.Dataset):
 
             except Exception as e:
                 self.bad_counter += 1
-                # print ("self.bad_counter: ", self.bad_counter)
-                # print ("self.good_counter: ", self.good_counter)
+                print ("self.bad_counter: ", self.bad_counter)
+                print ("self.good_counter: ", self.good_counter)
                 # print (e)
                 index += 1
                 # return None, None, None, None, None, None
