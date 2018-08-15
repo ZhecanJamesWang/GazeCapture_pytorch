@@ -40,7 +40,7 @@ Booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}
 
 # Change there flags to control what happens.
 doLoad = False # Load checkpoint at the beginning
-doTest = True # Only run test, no training
+doTest = False # Only run test, no training
 
 workers = 8
 epochs = 100
