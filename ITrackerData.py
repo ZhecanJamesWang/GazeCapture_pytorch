@@ -158,9 +158,9 @@ class ITrackerData(data.Dataset):
 
             return row, imFace, imEyeL, imEyeR, faceGrid, gaze
 
-        except Exceptions as e：
+        except Exceptions as e:
             return None, None, None, None, None, None
 
-            
+
     def __len__(self):
         return len(self.indices)
