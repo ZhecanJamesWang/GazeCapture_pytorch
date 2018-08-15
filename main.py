@@ -40,7 +40,7 @@ Booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}
 
 # Change there flags to control what happens.
 doLoad = False # Load checkpoint at the beginning
-doTest = False # Only run test, no training
+doTest = True # Only run test, no training
 
 workers = 8
 epochs = 100
@@ -97,7 +97,7 @@ def main():
         batch_size=batch_size, shuffle=False,
         num_workers=workers, pin_memory=True)
 
-
+    print "------------------------------------"
     criterion = nn.MSELoss().cuda()
 
     optimizer = torch.optim.SGD(model.parameters(), lr,
@@ -106,6 +106,7 @@ def main():
 
     # Quick test
     if doTest:
+        print ("validate: ")
         validate(val_loader, model, criterion, epoch)
         return
 
@@ -113,6 +114,7 @@ def main():
         adjust_learning_rate(optimizer, epoch)
 
     for epoch in range(epoch, epochs):
+        print ("epoch: ", epoch)
         adjust_learning_rate(optimizer, epoch)
 
         # train for one epoch
