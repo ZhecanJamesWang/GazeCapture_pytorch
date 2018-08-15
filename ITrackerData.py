@@ -138,25 +138,29 @@ class ITrackerData(data.Dataset):
 
         print ("imFacePath: ", imFacePath)
 
-        imFace = self.loadImage(imFacePath)
-        imEyeL = self.loadImage(imEyeLPath)
-        imEyeR = self.loadImage(imEyeRPath)
+        try:
+            imFace = self.loadImage(imFacePath)
+            imEyeL = self.loadImage(imEyeLPath)
+            imEyeR = self.loadImage(imEyeRPath)
 
-        imFace = self.transformFace(imFace)
-        imEyeL = self.transformEyeL(imEyeL)
-        imEyeR = self.transformEyeR(imEyeR)
+            imFace = self.transformFace(imFace)
+            imEyeL = self.transformEyeL(imEyeL)
+            imEyeR = self.transformEyeR(imEyeR)
 
-        gaze = np.array([self.metadata['labelDotXCam'][index], self.metadata['labelDotYCam'][index]], np.float32)
+            gaze = np.array([self.metadata['labelDotXCam'][index], self.metadata['labelDotYCam'][index]], np.float32)
 
-        faceGrid = self.makeGrid(self.metadata['labelFaceGrid'][index,:])
+            faceGrid = self.makeGrid(self.metadata['labelFaceGrid'][index,:])
 
-        # to tensor
-        row = torch.LongTensor([int(index)])
-        faceGrid = torch.FloatTensor(faceGrid)
-        gaze = torch.FloatTensor(gaze)
+            # to tensor
+            row = torch.LongTensor([int(index)])
+            faceGrid = torch.FloatTensor(faceGrid)
+            gaze = torch.FloatTensor(gaze)
 
-        return row, imFace, imEyeL, imEyeR, faceGrid, gaze
+            return row, imFace, imEyeL, imEyeR, faceGrid, gaze
 
+        except Exceptions as e：
+            return None, None, None, None, None, None
 
+            
     def __len__(self):
         return len(self.indices)
