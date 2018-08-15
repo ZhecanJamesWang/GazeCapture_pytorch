@@ -43,7 +43,6 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 		idx = int(frame[:-4])
 
 		# if not os.path.isdir(join(path, dir, "appleFace")):
-		print ("check: ", join(path, dir, "appleFace", frame))
 		if not os.path.exists(join(path, dir, "appleFace", frame)):
 			# print ("Skipping! Already Exists! **********")
 		# else:
@@ -67,16 +66,16 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 
 			# if image is null, skip
 			if img is None:
-				print("None Error opening image: {}".format(join(path, dir, "frames", frame)))
+				# print("None Error opening image: {}".format(join(path, dir, "frames", frame)))
 				continue
 
 			# if coordinates are negatives, skip (a lot of negative coords!)
 			if int(face_json["X"][idx]) < 0 or int(face_json["Y"][idx]) < 0 or \
 				int(left_json["X"][idx]) < 0 or int(left_json["Y"][idx]) < 0 or \
 				int(right_json["X"][idx]) < 0 or int(right_json["Y"][idx]) < 0:
-				print("Error with coordinates: {}".format(join(path, dir, "frames", frame)))
+				# print("Error with coordinates: {}".format(join(path, dir, "frames", frame)))
 				continue
-
+			print ("check: ", join(path, dir, "appleFace", frame))
 			print ("Processing !!!!!!!!!")
 
 			# get face
