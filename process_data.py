@@ -173,6 +173,6 @@ print ("sum: ", sum)
 
 # train_data = load_batch_from_data(train_names , dataset_path, None, img_ch, img_cols, img_rows)
 
-val_data = load_batch_from_data(val_names, dataset_path, None, img_ch, img_cols, img_rows)
+# val_data = load_batch_from_data(val_names, dataset_path, None, img_ch, img_cols, img_rows)
 
 test_data = load_batch_from_data(test_names, dataset_path, None, img_ch, img_cols, img_rows)
