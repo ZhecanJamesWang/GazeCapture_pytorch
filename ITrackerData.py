@@ -171,7 +171,7 @@ class ITrackerData(data.Dataset):
                 self.bad_counter += 1
                 print ("self.bad_counter: ", self.bad_counter)
                 print ("self.good_counter: ", self.good_counter)
-                # print (e)
+                print (e)
                 index += 1
                 # return None, None, None, None, None, None
 
