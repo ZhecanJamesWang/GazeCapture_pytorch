@@ -33,7 +33,7 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 		counter += 1
 		# directory
 		dir = img_name[:5]
-		if int(dir) >= 475:
+		if int(dir) >= 0:
 			# frame name
 			frame = img_name[6:]
 
