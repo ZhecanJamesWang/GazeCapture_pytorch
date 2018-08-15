@@ -30,6 +30,8 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 			print ("counter: ", counter)
 			print ("sum: ", sum)
 
+		print ("img_name: ", img_name)
+
 		counter += 1
 		# directory
 		dir = img_name[:5]
