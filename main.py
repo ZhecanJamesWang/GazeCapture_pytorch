@@ -150,7 +150,7 @@ def train(train_loader, model, criterion,optimizer, epoch):
     # for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(train_loader):
     i = 0
     while i <= len(train_loader):
-        i, row, imFace, imEyeL, imEyeR, faceGrid, gaze = train_loader.__getitem__(i);
+        i, row, imFace, imEyeL, imEyeR, faceGrid, gaze = train_loader.__getitem__(i)
         print ("get item, i: ", i)
         # measure data loading time
         data_time.update(time.time() - end)
@@ -204,8 +204,11 @@ def validate(val_loader, model, criterion, epoch):
     end = time.time()
 
 
-    oIndex = 0
-    for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(val_loader):
+    # for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(val_loader):
+    i = 0
+    while i <= len(train_loader):
+        i, row, imFace, imEyeL, imEyeR, faceGrid, gaze = train_loader.__getitem__(i)
+
         # measure data loading time
         data_time.update(time.time() - end)
         imFace = imFace.cuda(async=True)
@@ -245,6 +248,7 @@ def validate(val_loader, model, criterion, epoch):
                   'Error L2 {lossLin.val:.4f} ({lossLin.avg:.4f})\t'.format(
                     epoch, i, len(val_loader), batch_time=batch_time,
                    loss=losses,lossLin=lossesLin))
+        i += 1
 
     return lossesLin.avg
 

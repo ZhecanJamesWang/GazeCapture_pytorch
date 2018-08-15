@@ -153,7 +153,7 @@ class ITrackerData(data.Dataset):
 
                 self.good_counter += 1
                 print ("self.good_counter: ", self.good_counter)
-                print ("load image ！！！！！！！！！！！！！！！！！！！！")
+                print ("load image !!!!!!!!!!!!!!")
                 imFace = self.transformFace(imFace)
                 imEyeL = self.transformEyeL(imEyeL)
                 imEyeR = self.transformEyeR(imEyeR)
