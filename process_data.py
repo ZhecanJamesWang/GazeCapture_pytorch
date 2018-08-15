@@ -48,7 +48,6 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 			# print ("Skipping! Already Exists! **********")
 		# else:
 			# print ("dir : ", dir )
-			print ("Processing !!!!!!!!!")
 			# open json files
 			face_file = open(join(path, dir, "appleFace.json"))
 			left_file = open(join(path, dir, "appleLeftEye.json"))
@@ -77,6 +76,8 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 				int(right_json["X"][idx]) < 0 or int(right_json["Y"][idx]) < 0:
 				print("Error with coordinates: {}".format(join(path, dir, "frames", frame)))
 				continue
+
+			print ("Processing !!!!!!!!!")
 
 			# get face
 			tl_x_face = int(face_json["X"][idx])
