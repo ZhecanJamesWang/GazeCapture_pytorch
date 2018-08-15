@@ -156,11 +156,14 @@ test_path = dataset_path + '\ '.strip() + "test"
 
 train_names = load_data_names(train_path)
 train_names = sorted(train_names)
-print (train_names[:10])
+# print (train_names[:10])
 # raise "debug"
 
 val_names = load_data_names(val_path)
+val_names = sorted(val_names)
+
 test_names = load_data_names(test_path)
+test_names = sorted(test_names)
 
 print ("train_names: ", len(train_names))
 print ("val_names: ", len(val_names))
@@ -168,7 +171,7 @@ print ("test_names: ", len(test_names))
 sum = len(train_names) + len(val_names) + len(test_names)
 print ("sum: ", sum)
 
-train_data = load_batch_from_data(train_names , dataset_path, None, img_ch, img_cols, img_rows)
+# train_data = load_batch_from_data(train_names , dataset_path, None, img_ch, img_cols, img_rows)
 
 val_data = load_batch_from_data(val_names, dataset_path, None, img_ch, img_cols, img_rows)
 
