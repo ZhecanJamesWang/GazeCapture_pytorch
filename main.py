@@ -206,8 +206,8 @@ def validate(val_loader, model, criterion, epoch):
 
     # for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(val_loader):
     i = 0
-    while i <= len(train_loader):
-        i, row, imFace, imEyeL, imEyeR, faceGrid, gaze = train_loader.__getitem__(i)
+    while i <= len(val_loader):
+        i, row, imFace, imEyeL, imEyeR, faceGrid, gaze = val_loader.__getitem__(i)
 
         # measure data loading time
         data_time.update(time.time() - end)
