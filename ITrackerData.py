@@ -31,7 +31,7 @@ Booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}
 
 '''
 
-DATASET_PATH = "..\Eye-Tracking-for-Everyone-master\Eye-Tracking-for-Everyone-master\GazeCapture"
+DATASET_PATH = "../Eye-Tracking-for-Everyone-master/Eye-Tracking-for-Everyone-master/GazeCapture"
 MEAN_PATH = './'
 META_PATH = './metadata.mat'
 
