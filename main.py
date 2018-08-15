@@ -147,11 +147,11 @@ def train(train_loader, model, criterion,optimizer, epoch):
 
     end = time.time()
 
-    # for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(train_loader):
-    i = 0
-    while i <= len(train_loader):
-        i, row, imFace, imEyeL, imEyeR, faceGrid, gaze = train_loader.__getitem__(i)
-        print ("get item, i: ", i)
+    for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(train_loader):
+    # i = 0
+    # while i <= len(train_loader):
+        # i, row, imFace, imEyeL, imEyeR, faceGrid, gaze = train_loader.__getitem__(i)
+        # print ("get item, i: ", i)
         # measure data loading time
         data_time.update(time.time() - end)
         imFace = imFace.cuda(async=True)
@@ -190,7 +190,7 @@ def train(train_loader, model, criterion,optimizer, epoch):
                   'Loss {loss.val:.4f} ({loss.avg:.4f})\t'.format(
                    epoch, i, len(train_loader), batch_time=batch_time,
                    data_time=data_time, loss=losses))
-        i += 1
+        # i += 1
 
 def validate(val_loader, model, criterion, epoch):
     global count_test
@@ -204,11 +204,10 @@ def validate(val_loader, model, criterion, epoch):
     end = time.time()
 
 
-    # for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(val_loader):
-    i = 0
-    while i <= len(val_loader):
-        i, row, imFace, imEyeL, imEyeR, faceGrid, gaze = val_loader.__getitem__(i)
-
+    # i = 0
+    # while i <= len(val_loader):
+    #     i, row, imFace, imEyeL, imEyeR, faceGrid, gaze = val_loader.__getitem__(i)
+    for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(val_loader):
         # measure data loading time
         data_time.update(time.time() - end)
         imFace = imFace.cuda(async=True)
@@ -248,7 +247,7 @@ def validate(val_loader, model, criterion, epoch):
                   'Error L2 {lossLin.val:.4f} ({lossLin.avg:.4f})\t'.format(
                     epoch, i, len(val_loader), batch_time=batch_time,
                    loss=losses,lossLin=lossesLin))
-        i += 1
+        # i += 1
 
     return lossesLin.avg
 
