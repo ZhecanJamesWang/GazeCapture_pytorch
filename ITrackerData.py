@@ -108,13 +108,13 @@ class ITrackerData(data.Dataset):
     def loadImage(self, path):
         try:
             im = Image.open(path).convert('RGB')
+            return im
         except Exception as e:
             print (e)
         # except OSError:
-            # raise RuntimeError('Could not read image: ' + path)
+            raise RuntimeError('Could not read image: ' + path)
             #im = Image.new("RGB", self.imSize, "white")
 
-        return im
 
 
     def makeGrid(self, params):
@@ -171,7 +171,6 @@ class ITrackerData(data.Dataset):
             except Exception as e:
                 self.bad_counter += 1
                 print ("self.bad_counter: ", self.bad_counter)
-                print ("self.good_counter: ", self.good_counter)
                 print (e)
                 index += 1
                 # return None, None, None, None, None, None
