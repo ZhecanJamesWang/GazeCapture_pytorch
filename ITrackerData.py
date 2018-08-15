@@ -108,8 +108,10 @@ class ITrackerData(data.Dataset):
     def loadImage(self, path):
         try:
             im = Image.open(path).convert('RGB')
-        except OSError:
-            raise RuntimeError('Could not read image: ' + path)
+        except Exception as e:
+            print e
+        # except OSError:
+            # raise RuntimeError('Could not read image: ' + path)
             #im = Image.new("RGB", self.imSize, "white")
 
         return im
