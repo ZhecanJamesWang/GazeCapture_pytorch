@@ -41,7 +41,8 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 			# index of the frame into a sequence
 			idx = int(frame[:-4])
 
-			if not os.path.isdir(join(path, dir, "appleFace")):
+			# if not os.path.isdir(join(path, dir, "appleFace")):
+			if not os.path.exists(join(path, dir, "appleFace", frame)):
 				# print ("Skipping! Already Exists! **********")
 			# else:
 				print ("dir : ", dir )
