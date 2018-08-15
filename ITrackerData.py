@@ -147,7 +147,7 @@ class ITrackerData(data.Dataset):
 
             self.good_counter += 1
             print ("self.good_counter: ", self.good_counter)
-            
+
             imFace = self.transformFace(imFace)
             imEyeL = self.transformEyeL(imEyeL)
             imEyeR = self.transformEyeR(imEyeR)
@@ -166,6 +166,7 @@ class ITrackerData(data.Dataset):
         except Exception as e:
             self.bad_counter += 1
             print ("self.bad_counter: ", self.bad_counter)
+            print ("self.good_counter: ", self.good_counter)
             print (e)
             # return None, None, None, None, None, None
 
