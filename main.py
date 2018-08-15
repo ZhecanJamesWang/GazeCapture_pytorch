@@ -44,8 +44,8 @@ doTest = True # Only run test, no training
 
 workers = 8
 epochs = 100
-batch_size = torch.cuda.device_count()*100 # Change if out of cuda memory
-
+# batch_size = torch.cuda.device_count()*100 # Change if out of cuda memory
+batch_size = 10
 base_lr = 0.0001
 momentum = 0.9
 weight_decay = 1e-4

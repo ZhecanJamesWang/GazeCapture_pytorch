@@ -170,8 +170,8 @@ class ITrackerData(data.Dataset):
 
             except Exception as e:
                 self.bad_counter += 1
-                print ("self.bad_counter: ", self.bad_counter)
-                print (e)
+                # print ("self.bad_counter: ", self.bad_counter)
+                # print (e)
                 index += 1
                 # return None, None, None, None, None, None
 
