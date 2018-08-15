@@ -141,13 +141,13 @@ class ITrackerData(data.Dataset):
         print ("imFacePath: ", imFacePath)
 
         try:
-            self.good_counter += 1
-            print ("self.good_counter: ", self.good_counter)
-
             imFace = self.loadImage(imFacePath)
             imEyeL = self.loadImage(imEyeLPath)
             imEyeR = self.loadImage(imEyeRPath)
 
+            self.good_counter += 1
+            print ("self.good_counter: ", self.good_counter)
+            
             imFace = self.transformFace(imFace)
             imEyeL = self.transformEyeL(imEyeL)
             imEyeR = self.transformEyeR(imEyeR)
