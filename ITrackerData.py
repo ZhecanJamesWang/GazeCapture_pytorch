@@ -141,6 +141,9 @@ class ITrackerData(data.Dataset):
         print ("imFacePath: ", imFacePath)
 
         try:
+            self.good_counter += 1
+            print ("self.good_counter: ", self.good_counter)
+
             imFace = self.loadImage(imFacePath)
             imEyeL = self.loadImage(imEyeLPath)
             imEyeR = self.loadImage(imEyeRPath)
@@ -157,8 +160,7 @@ class ITrackerData(data.Dataset):
             row = torch.LongTensor([int(index)])
             faceGrid = torch.FloatTensor(faceGrid)
             gaze = torch.FloatTensor(gaze)
-            self.good_counter += 1
-            print ("self.good_counter: ", self.good_counter)
+
             return row, imFace, imEyeL, imEyeR, faceGrid, gaze
 
         except Exception as e:
