@@ -157,7 +157,7 @@ test_path = dataset_path + '\ '.strip() + "test"
 train_names = load_data_names(train_path)
 train_names = sorted(train_names)
 print (train_names[:10])
-raise "debug"
+# raise "debug"
 
 val_names = load_data_names(val_path)
 test_names = load_data_names(test_path)
