@@ -42,90 +42,96 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 			# index of the frame into a sequence
 			idx = int(frame[:-4])
 
-			# open json files
-			face_file = open(join(path, dir, "appleFace.json"))
-			left_file = open(join(path, dir, "appleLeftEye.json"))
-			right_file = open(join(path, dir, "appleRightEye.json"))
-			dot_file = open(join(path, dir, "dotInfo.json"))
-			grid_file = open(join(path, dir, "faceGrid.json"))
 
-			# load json content
-			face_json = json.load(face_file)
-			left_json = json.load(left_file)
-			right_json = json.load(right_file)
-			dot_json = json.load(dot_file)
-			grid_json = json.load(grid_file)
+			if os.path.isfile(join(path, dir, "appleFace", frame)):
+				print ("Skipping! Already Exists!!!!!")
 
-			# open image
-			img = cv2.imread(join(path, dir, "frames", frame))
+			else:
+				print ("Processing!!!!")
+				# open json files
+				face_file = open(join(path, dir, "appleFace.json"))
+				left_file = open(join(path, dir, "appleLeftEye.json"))
+				right_file = open(join(path, dir, "appleRightEye.json"))
+				dot_file = open(join(path, dir, "dotInfo.json"))
+				grid_file = open(join(path, dir, "faceGrid.json"))
 
-			# if image is null, skip
-			if img is None:
-				# print("Error opening image: {}".format(join(path, dir, "frames", frame)))
-				continue
+				# load json content
+				face_json = json.load(face_file)
+				left_json = json.load(left_file)
+				right_json = json.load(right_file)
+				dot_json = json.load(dot_file)
+				grid_json = json.load(grid_file)
 
-			# if coordinates are negatives, skip (a lot of negative coords!)
-			if int(face_json["X"][idx]) < 0 or int(face_json["Y"][idx]) < 0 or \
-				int(left_json["X"][idx]) < 0 or int(left_json["Y"][idx]) < 0 or \
-				int(right_json["X"][idx]) < 0 or int(right_json["Y"][idx]) < 0:
-				# print("Error with coordinates: {}".format(join(path, dir, "frames", frame)))
-				continue
+				# open image
+				img = cv2.imread(join(path, dir, "frames", frame))
 
-			# get face
-			tl_x_face = int(face_json["X"][idx])
-			tl_y_face = int(face_json["Y"][idx])
-			w = int(face_json["W"][idx])
-			h = int(face_json["H"][idx])
-			br_x = tl_x_face + w
-			br_y = tl_y_face + h
-			face = img[tl_y_face:br_y, tl_x_face:br_x]
+				# if image is null, skip
+				if img is None:
+					# print("Error opening image: {}".format(join(path, dir, "frames", frame)))
+					continue
 
-			# get left eye
-			tl_x = tl_x_face + int(left_json["X"][idx])
-			tl_y = tl_y_face + int(left_json["Y"][idx])
-			w = int(left_json["W"][idx])
-			h = int(left_json["H"][idx])
-			br_x = tl_x + w
-			br_y = tl_y + h
-			left_eye = img[tl_y:br_y, tl_x:br_x]
+				# if coordinates are negatives, skip (a lot of negative coords!)
+				if int(face_json["X"][idx]) < 0 or int(face_json["Y"][idx]) < 0 or \
+					int(left_json["X"][idx]) < 0 or int(left_json["Y"][idx]) < 0 or \
+					int(right_json["X"][idx]) < 0 or int(right_json["Y"][idx]) < 0:
+					# print("Error with coordinates: {}".format(join(path, dir, "frames", frame)))
+					continue
 
-			# get right eye
-			tl_x = tl_x_face + int(right_json["X"][idx])
-			tl_y = tl_y_face + int(right_json["Y"][idx])
-			w = int(right_json["W"][idx])
-			h = int(right_json["H"][idx])
-			br_x = tl_x + w
-			br_y = tl_y + h
-			right_eye = img[tl_y:br_y, tl_x:br_x]
+				# get face
+				tl_x_face = int(face_json["X"][idx])
+				tl_y_face = int(face_json["Y"][idx])
+				w = int(face_json["W"][idx])
+				h = int(face_json["H"][idx])
+				br_x = tl_x_face + w
+				br_y = tl_y_face + h
+				face = img[tl_y_face:br_y, tl_x_face:br_x]
 
-			# # get face grid (in ch, cols, rows convention)
-			# # face_grid = np.zeros(shape=(25, 25, 1), dtype=np.float32)
-			# face_grid = np.zeros(shape=(25, 25), dtype=np.float32)
-			# tl_x = int(grid_json["X"][idx])
-			# tl_y = int(grid_json["Y"][idx])
-			# w = int(grid_json["W"][idx])
-			# h = int(grid_json["H"][idx])
-			# br_x = tl_x + w
-			# br_y = tl_y + h
-			#
-			# # print ("face_grid: ", face_grid.shape)
-			# # face_grid[0, tl_y:br_y, tl_x:br_x] = 1
-			# face_grid[tl_y:br_y, tl_x:br_x] = 1
-			# # face_grid = face_grid.flatten()
+				# get left eye
+				tl_x = tl_x_face + int(left_json["X"][idx])
+				tl_y = tl_y_face + int(left_json["Y"][idx])
+				w = int(left_json["W"][idx])
+				h = int(left_json["H"][idx])
+				br_x = tl_x + w
+				br_y = tl_y + h
+				left_eye = img[tl_y:br_y, tl_x:br_x]
 
-			# # get labels
-			# y_x = dot_json["XCam"][idx]
-			# y_y = dot_json["YCam"][idx]
+				# get right eye
+				tl_x = tl_x_face + int(right_json["X"][idx])
+				tl_y = tl_y_face + int(right_json["Y"][idx])
+				w = int(right_json["W"][idx])
+				h = int(right_json["H"][idx])
+				br_x = tl_x + w
+				br_y = tl_y + h
+				right_eye = img[tl_y:br_y, tl_x:br_x]
 
-			for folder in ["/appleFace/", "/appleLeftEye/", "/appleRightEye/"]:
-				p = join(path, dir) + folder
-				check_and_make_dir(p)
+				# # get face grid (in ch, cols, rows convention)
+				# # face_grid = np.zeros(shape=(25, 25, 1), dtype=np.float32)
+				# face_grid = np.zeros(shape=(25, 25), dtype=np.float32)
+				# tl_x = int(grid_json["X"][idx])
+				# tl_y = int(grid_json["Y"][idx])
+				# w = int(grid_json["W"][idx])
+				# h = int(grid_json["H"][idx])
+				# br_x = tl_x + w
+				# br_y = tl_y + h
+				#
+				# # print ("face_grid: ", face_grid.shape)
+				# # face_grid[0, tl_y:br_y, tl_x:br_x] = 1
+				# face_grid[tl_y:br_y, tl_x:br_x] = 1
+				# # face_grid = face_grid.flatten()
 
-			cv2.imwrite(join(path, dir, "appleFace", frame), face)
-			cv2.imwrite(join(path, dir, "appleRightEye", frame), right_eye)
-			cv2.imwrite(join(path, dir, "appleLeftEye", frame), left_eye)
-			# cv2.imwrite("images/image.png", img)
-			# raise "debug"
+				# # get labels
+				# y_x = dot_json["XCam"][idx]
+				# y_y = dot_json["YCam"][idx]
+
+				for folder in ["/appleFace/", "/appleLeftEye/", "/appleRightEye/"]:
+					p = join(path, dir) + folder
+					check_and_make_dir(p)
+
+				cv2.imwrite(join(path, dir, "appleFace", frame), face)
+				cv2.imwrite(join(path, dir, "appleRightEye", frame), right_eye)
+				cv2.imwrite(join(path, dir, "appleLeftEye", frame), left_eye)
+				# cv2.imwrite("images/image.png", img)
+				# raise "debug"
 
 # create a list of all names of images in the dataset
 def load_data_names(path):
