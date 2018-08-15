@@ -147,7 +147,10 @@ def train(train_loader, model, criterion,optimizer, epoch):
 
     end = time.time()
 
-    for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(train_loader):
+    # for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(train_loader):
+    i = 0
+    while i <= len(train_loader):
+        i, row, imFace, imEyeL, imEyeR, faceGrid, gaze = train_loader.__getitem__(i);
 
         # measure data loading time
         data_time.update(time.time() - end)
@@ -187,6 +190,7 @@ def train(train_loader, model, criterion,optimizer, epoch):
                   'Loss {loss.val:.4f} ({loss.avg:.4f})\t'.format(
                    epoch, i, len(train_loader), batch_time=batch_time,
                    data_time=data_time, loss=losses))
+        i += 1
 
 def validate(val_loader, model, criterion, epoch):
     global count_test
