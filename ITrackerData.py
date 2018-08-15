@@ -158,7 +158,8 @@ class ITrackerData(data.Dataset):
 
             return row, imFace, imEyeL, imEyeR, faceGrid, gaze
 
-        except Exceptions as e:
+        except Exception as e:
+            print (e)
             return None, None, None, None, None, None
 
 
