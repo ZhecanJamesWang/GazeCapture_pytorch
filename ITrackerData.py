@@ -131,8 +131,11 @@ class ITrackerData(data.Dataset):
         return grid
 
     def __getitem__(self, index):
+////////////////////////////////////////
+# TODO:figure out what is index about
 
-        # print ("index: ", index)
+        print ("----------------------")
+        print ("index: ", index)
         if_load = False
 
         index = self.indices[index]
@@ -177,6 +180,6 @@ class ITrackerData(data.Dataset):
 
         return row, imFace, imEyeL, imEyeR, faceGrid, gaze
         # index,
-        
+
     def __len__(self):
         return len(self.indices)
