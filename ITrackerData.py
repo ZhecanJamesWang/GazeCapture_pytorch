@@ -139,7 +139,7 @@ class ITrackerData(data.Dataset):
         if_load = False
 
         index = self.indices[index]
-        print "^^^^^^^^^^^"
+        print ("^^^^^^^^^^^")
 
         raise "debug"
         # print ("self.indices[index]: ", self.indices[index])
