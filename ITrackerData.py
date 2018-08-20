@@ -133,37 +133,37 @@ class ITrackerData(data.Dataset):
 		return grid
 
 	def check_indices(self):
-
+		tmp_indices = []
 		for i in range(len(self.indices)):
 			index = self.indices[i]
 
-		imFacePath = os.path.join(DATASET_PATH, '%05d/appleFace/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
-		imEyeLPath = os.path.join(DATASET_PATH, '%05d/appleLeftEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
-		imEyeRPath = os.path.join(DATASET_PATH, '%05d/appleRightEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+			imFacePath = os.path.join(DATASET_PATH, '%05d/appleFace/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+			imEyeLPath = os.path.join(DATASET_PATH, '%05d/appleLeftEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+			imEyeRPath = os.path.join(DATASET_PATH, '%05d/appleRightEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
 
-		try:
-			imFace = self.loadImage(imFacePath)
-			imEyeL = self.loadImage(imEyeLPath)
-			imEyeR = self.loadImage(imEyeRPath)
+			try:
+				imFace = self.loadImage(imFacePath)
+				imEyeL = self.loadImage(imEyeLPath)
+				imEyeR = self.loadImage(imEyeRPath)
 
-			imFace = self.transformFace(imFace)
-			imEyeL = self.transformEyeL(imEyeL)
-			imEyeR = self.transformEyeR(imEyeR)
+				imFace = self.transformFace(imFace)
+				imEyeL = self.transformEyeL(imEyeL)
+				imEyeR = self.transformEyeR(imEyeR)
 
-			gaze = np.array([self.metadata['labelDotXCam'][index], self.metadata['labelDotYCam'][index]], np.float32)
+				gaze = np.array([self.metadata['labelDotXCam'][index], self.metadata['labelDotYCam'][index]], np.float32)
 
-			faceGrid = self.makeGrid(self.metadata['labelFaceGrid'][index,:])
+				faceGrid = self.makeGrid(self.metadata['labelFaceGrid'][index,:])
 
-			# to tensor
-			row = torch.LongTensor([int(index)])
-			faceGrid = torch.FloatTensor(faceGrid)
-			gaze = torch.FloatTensor(gaze)
-			print ("working: ", index)
-
-		except Exception as e:
-			print (e)
-			print ("failing: ", index)
-
+				# to tensor
+				row = torch.LongTensor([int(index)])
+				faceGrid = torch.FloatTensor(faceGrid)
+				gaze = torch.FloatTensor(gaze)
+				print ("working: ", index)
+				tmp_indices.append(index)
+			except Exception as e:
+				print (e)
+				print ("failing: ", index)
+		self.indices = tmp_indices
 
 	def __getitem__(self, index):
 		index = self.indices[index]
