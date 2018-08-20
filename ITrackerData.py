@@ -140,6 +140,7 @@ class ITrackerData(data.Dataset):
 
         index = self.indices[index]
 
+        raise "debug"
         # print ("self.indices[index]: ", self.indices[index])
 
         while not if_load:
