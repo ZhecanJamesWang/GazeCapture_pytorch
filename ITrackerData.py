@@ -161,7 +161,7 @@ class ITrackerData(data.Dataset):
 			print ("working: ", index)
 
 		except Exception as e:
-			print e
+			print (e)
 			print ("failing: ", index)
 
 
