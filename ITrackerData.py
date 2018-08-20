@@ -134,11 +134,12 @@ class ITrackerData(data.Dataset):
 # ////////////////////////////////////////
 # TODO:figure out what is index about
 
-        print ("----------------------")
+        print ("vvvvvvvvvv")
         print ("index: ", index)
         if_load = False
 
         index = self.indices[index]
+        print "^^^^^^^^^^^"
 
         raise "debug"
         # print ("self.indices[index]: ", self.indices[index])

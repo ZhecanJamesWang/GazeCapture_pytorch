@@ -91,7 +91,7 @@ def main():
 
     train_loader = torch.utils.data.DataLoader(
         dataTrain,
-        batch_size=batch_size, shuffle=True,
+        batch_size=batch_size, shuffle=False,
         num_workers=workers, pin_memory=True)
         # , collate_fn=my_collate
 
