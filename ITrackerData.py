@@ -7,6 +7,7 @@ import torchvision.transforms as transforms
 import torch
 import numpy as np
 import re
+import pickle
 
 '''
 Data loader for the iTracker.
@@ -158,13 +159,14 @@ class ITrackerData(data.Dataset):
 				row = torch.LongTensor([int(index)])
 				faceGrid = torch.FloatTensor(faceGrid)
 				gaze = torch.FloatTensor(gaze)
-				print ("working: ", index)
+				# print ("working: ", index)
 				tmp_indices.append(index)
 			except Exception as e:
 				print (e)
-				print ("failing: ", index)
+				# print ("failing: ", index)
 		self.indices = tmp_indices
-
+		pickle.dump(self.indices, open("indices.p", "wb"))
+		
 	def __getitem__(self, index):
 		index = self.indices[index]
 
