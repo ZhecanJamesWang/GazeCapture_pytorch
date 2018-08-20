@@ -131,7 +131,7 @@ class ITrackerData(data.Dataset):
         return grid
 
     def __getitem__(self, index):
-////////////////////////////////////////
+# ////////////////////////////////////////
 # TODO:figure out what is index about
 
         print ("----------------------")
