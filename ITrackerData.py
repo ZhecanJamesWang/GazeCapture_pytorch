@@ -106,7 +106,7 @@ class ITrackerData(data.Dataset):
 		print('Loaded iTracker dataset split "%s" with %d records...' % (split, len(self.indices)))
 
 		self.check_indices()
-		
+
 	def loadImage(self, path):
 		try:
 			im = Image.open(path).convert('RGB')
@@ -134,7 +134,7 @@ class ITrackerData(data.Dataset):
 
 	def check_indices(self):
 
-		for i in range(len(self.indices))：
+		for i in range(len(self.indices)):
 			index = self.indices[i]
 
 		imFacePath = os.path.join(DATASET_PATH, '%05d/appleFace/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
