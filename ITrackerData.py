@@ -36,152 +36,215 @@ MEAN_PATH = './'
 META_PATH = './metadata.mat'
 
 def loadMetadata(filename, silent = False):
-    try:
-        # http://stackoverflow.com/questions/6273634/access-array-contents-from-a-mat-file-loaded-using-scipy-io-loadmat-python
-        if not silent:
-            print('\tReading metadata from %s...' % filename)
-        metadata = sio.loadmat(filename, squeeze_me=True, struct_as_record=False)
-    except:
-        print('\tFailed to read the meta file "%s"!' % filename)
-        return None
-    return metadata
+	try:
+		# http://stackoverflow.com/questions/6273634/access-array-contents-from-a-mat-file-loaded-using-scipy-io-loadmat-python
+		if not silent:
+			print('\tReading metadata from %s...' % filename)
+		metadata = sio.loadmat(filename, squeeze_me=True, struct_as_record=False)
+	except:
+		print('\tFailed to read the meta file "%s"!' % filename)
+		return None
+	return metadata
 
 class SubtractMean(object):
-    """Normalize an tensor image with mean.
-    """
+	"""Normalize an tensor image with mean.
+	"""
 
-    def __init__(self, meanImg):
-        self.meanImg = transforms.ToTensor()(meanImg)
+	def __init__(self, meanImg):
+		self.meanImg = transforms.ToTensor()(meanImg)
 
-    def __call__(self, tensor):
-        """
-        Args:
-            tensor (Tensor): Tensor image of size (C, H, W) to be normalized.
-        Returns:
-            Tensor: Normalized image.
-        """
-        return tensor.sub(self.meanImg)
+	def __call__(self, tensor):
+		"""
+		Args:
+			tensor (Tensor): Tensor image of size (C, H, W) to be normalized.
+		Returns:
+			Tensor: Normalized image.
+		"""
+		return tensor.sub(self.meanImg)
 
 
 class ITrackerData(data.Dataset):
-    def __init__(self, split = 'train', imSize=(224,224), gridSize=(25, 25)):
-        self.good_counter = 0
-        self.bad_counter = 0
+	def __init__(self, split = 'train', imSize=(224,224), gridSize=(25, 25)):
+		self.good_counter = 0
+		self.bad_counter = 0
 
-        self.imSize = imSize
-        self.gridSize = gridSize
+		self.imSize = imSize
+		self.gridSize = gridSize
 
-        print('Loading iTracker dataset...')
-        self.metadata = loadMetadata(META_PATH)
-        self.faceMean = loadMetadata(os.path.join(MEAN_PATH, 'mean_face_224.mat'))['image_mean']
-        self.eyeLeftMean = loadMetadata(os.path.join(MEAN_PATH, 'mean_left_224.mat'))['image_mean']
-        self.eyeRightMean = loadMetadata(os.path.join(MEAN_PATH, 'mean_right_224.mat'))['image_mean']
-
-
-        self.transformFace = transforms.Compose([
-            transforms.Scale(self.imSize),
-            transforms.ToTensor(),
-            SubtractMean(meanImg=self.faceMean),
-        ])
-        self.transformEyeL = transforms.Compose([
-            transforms.Scale(self.imSize),
-            transforms.ToTensor(),
-            SubtractMean(meanImg=self.eyeLeftMean),
-        ])
-        self.transformEyeR = transforms.Compose([
-            transforms.Scale(self.imSize),
-            transforms.ToTensor(),
-            SubtractMean(meanImg=self.eyeRightMean),
-        ])
+		print('Loading iTracker dataset...')
+		self.metadata = loadMetadata(META_PATH)
+		self.faceMean = loadMetadata(os.path.join(MEAN_PATH, 'mean_face_224.mat'))['image_mean']
+		self.eyeLeftMean = loadMetadata(os.path.join(MEAN_PATH, 'mean_left_224.mat'))['image_mean']
+		self.eyeRightMean = loadMetadata(os.path.join(MEAN_PATH, 'mean_right_224.mat'))['image_mean']
 
 
-        if split == 'test':
-            mask = self.metadata['labelTest']
-        elif split == 'val':
-            mask = self.metadata['labelVal']
-        else:
-            mask = self.metadata['labelTrain']
-
-        self.indices = np.argwhere(mask)[:,0]
-        print('Loaded iTracker dataset split "%s" with %d records...' % (split, len(self.indices)))
-
-    def loadImage(self, path):
-        try:
-            im = Image.open(path).convert('RGB')
-            return im
-        except Exception as e:
-            print (e)
-        # except OSError:
-            raise RuntimeError('Could not read image: ' + path)
-            #im = Image.new("RGB", self.imSize, "white")
+		self.transformFace = transforms.Compose([
+			transforms.Scale(self.imSize),
+			transforms.ToTensor(),
+			SubtractMean(meanImg=self.faceMean),
+		])
+		self.transformEyeL = transforms.Compose([
+			transforms.Scale(self.imSize),
+			transforms.ToTensor(),
+			SubtractMean(meanImg=self.eyeLeftMean),
+		])
+		self.transformEyeR = transforms.Compose([
+			transforms.Scale(self.imSize),
+			transforms.ToTensor(),
+			SubtractMean(meanImg=self.eyeRightMean),
+		])
 
 
+		if split == 'test':
+			mask = self.metadata['labelTest']
+		elif split == 'val':
+			mask = self.metadata['labelVal']
+		else:
+			mask = self.metadata['labelTrain']
 
-    def makeGrid(self, params):
-        gridLen = self.gridSize[0] * self.gridSize[1]
-        grid = np.zeros([gridLen,], np.float32)
+		self.indices = np.argwhere(mask)[:,0]
+		print('Loaded iTracker dataset split "%s" with %d records...' % (split, len(self.indices)))
 
-        indsY = np.array([i // self.gridSize[0] for i in range(gridLen)])
-        indsX = np.array([i % self.gridSize[0] for i in range(gridLen)])
-        condX = np.logical_and(indsX >= params[0], indsX < params[0] + params[2])
-        condY = np.logical_and(indsY >= params[1], indsY < params[1] + params[3])
-        cond = np.logical_and(condX, condY)
+		self.check_indices()
+		
+	def loadImage(self, path):
+		try:
+			im = Image.open(path).convert('RGB')
+			return im
+		except Exception as e:
+			print (e)
+		# except OSError:
+			raise RuntimeError('Could not read image: ' + path)
+			#im = Image.new("RGB", self.imSize, "white")
 
-        grid[cond] = 1
-        return grid
 
-    def __getitem__(self, index):
-# ////////////////////////////////////////
-# TODO:figure out what is index about
 
-        print ("vvvvvvvvvv")
-        print ("index: ", index)
-        if_load = False
+	def makeGrid(self, params):
+		gridLen = self.gridSize[0] * self.gridSize[1]
+		grid = np.zeros([gridLen,], np.float32)
 
-        index = self.indices[index]
-        print ("^^^^^^^^^^^")
+		indsY = np.array([i // self.gridSize[0] for i in range(gridLen)])
+		indsX = np.array([i % self.gridSize[0] for i in range(gridLen)])
+		condX = np.logical_and(indsX >= params[0], indsX < params[0] + params[2])
+		condY = np.logical_and(indsY >= params[1], indsY < params[1] + params[3])
+		cond = np.logical_and(condX, condY)
 
-        raise "debug"
-        # print ("self.indices[index]: ", self.indices[index])
+		grid[cond] = 1
+		return grid
 
-        while not if_load:
-            try:
-                imFacePath = os.path.join(DATASET_PATH, '%05d/appleFace/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
-                imEyeLPath = os.path.join(DATASET_PATH, '%05d/appleLeftEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
-                imEyeRPath = os.path.join(DATASET_PATH, '%05d/appleRightEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+	def check_indices(self):
 
-                print ("imFacePath: ", imFacePath)
+		for i in range(len(self.indices))：
+			index = self.indices[i]
 
-                imFace = self.loadImage(imFacePath)
-                imEyeL = self.loadImage(imEyeLPath)
-                imEyeR = self.loadImage(imEyeRPath)
+		imFacePath = os.path.join(DATASET_PATH, '%05d/appleFace/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+		imEyeLPath = os.path.join(DATASET_PATH, '%05d/appleLeftEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+		imEyeRPath = os.path.join(DATASET_PATH, '%05d/appleRightEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
 
-                self.good_counter += 1
-                print ("self.good_counter: ", self.good_counter)
-                print ("load image !!!!!!!!!!!!!!")
-                imFace = self.transformFace(imFace)
-                imEyeL = self.transformEyeL(imEyeL)
-                imEyeR = self.transformEyeR(imEyeR)
+		try:
+			imFace = self.loadImage(imFacePath)
+			imEyeL = self.loadImage(imEyeLPath)
+			imEyeR = self.loadImage(imEyeRPath)
 
-                gaze = np.array([self.metadata['labelDotXCam'][index], self.metadata['labelDotYCam'][index]], np.float32)
+			imFace = self.transformFace(imFace)
+			imEyeL = self.transformEyeL(imEyeL)
+			imEyeR = self.transformEyeR(imEyeR)
 
-                faceGrid = self.makeGrid(self.metadata['labelFaceGrid'][index,:])
+			gaze = np.array([self.metadata['labelDotXCam'][index], self.metadata['labelDotYCam'][index]], np.float32)
 
-                # to tensor
-                row = torch.LongTensor([int(index)])
-                faceGrid = torch.FloatTensor(faceGrid)
-                gaze = torch.FloatTensor(gaze)
-                if_load = True
+			faceGrid = self.makeGrid(self.metadata['labelFaceGrid'][index,:])
 
-            except Exception as e:
-                self.bad_counter += 1
-                # print ("self.bad_counter: ", self.bad_counter)
-                # print (e)
-                index += 1
-                # return None, None, None, None, None, None
+			# to tensor
+			row = torch.LongTensor([int(index)])
+			faceGrid = torch.FloatTensor(faceGrid)
+			gaze = torch.FloatTensor(gaze)
+			print ("working: ", index)
 
-        return row, imFace, imEyeL, imEyeR, faceGrid, gaze
-        # index,
+		except Exception as e:
+			print e
+			print ("failing: ", index)
 
-    def __len__(self):
-        return len(self.indices)
+
+	def __getitem__(self, index):
+		index = self.indices[index]
+
+		imFacePath = os.path.join(DATASET_PATH, '%05d/appleFace/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+		imEyeLPath = os.path.join(DATASET_PATH, '%05d/appleLeftEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+		imEyeRPath = os.path.join(DATASET_PATH, '%05d/appleRightEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+
+		imFace = self.loadImage(imFacePath)
+		imEyeL = self.loadImage(imEyeLPath)
+		imEyeR = self.loadImage(imEyeRPath)
+
+		imFace = self.transformFace(imFace)
+		imEyeL = self.transformEyeL(imEyeL)
+		imEyeR = self.transformEyeR(imEyeR)
+
+		gaze = np.array([self.metadata['labelDotXCam'][index], self.metadata['labelDotYCam'][index]], np.float32)
+
+		faceGrid = self.makeGrid(self.metadata['labelFaceGrid'][index,:])
+
+		# to tensor
+		row = torch.LongTensor([int(index)])
+		faceGrid = torch.FloatTensor(faceGrid)
+		gaze = torch.FloatTensor(gaze)
+
+		return row, imFace, imEyeL, imEyeR, faceGrid, gaze
+
+	def __len__(self):
+		return len(self.indices)
+
+
+
+#     def __getitem__(self, index):
+# # ////////////////////////////////////////
+# # TODO:figure out what is index about
+#
+#         print ("vvvvvvvvvv")
+#         print ("index: ", index)
+#         if_load = False
+#
+#         index = self.indices[index]
+#         print ("^^^^^^^^^^^")
+#
+#         raise "debug"
+#         # print ("self.indices[index]: ", self.indices[index])
+#
+#         while not if_load:
+#             try:
+#                 imFacePath = os.path.join(DATASET_PATH, '%05d/appleFace/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+#                 imEyeLPath = os.path.join(DATASET_PATH, '%05d/appleLeftEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+#                 imEyeRPath = os.path.join(DATASET_PATH, '%05d/appleRightEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+#
+#                 print ("imFacePath: ", imFacePath)
+#
+#                 imFace = self.loadImage(imFacePath)
+#                 imEyeL = self.loadImage(imEyeLPath)
+#                 imEyeR = self.loadImage(imEyeRPath)
+#
+#                 self.good_counter += 1
+#                 print ("self.good_counter: ", self.good_counter)
+#                 print ("load image !!!!!!!!!!!!!!")
+#                 imFace = self.transformFace(imFace)
+#                 imEyeL = self.transformEyeL(imEyeL)
+#                 imEyeR = self.transformEyeR(imEyeR)
+#
+#                 gaze = np.array([self.metadata['labelDotXCam'][index], self.metadata['labelDotYCam'][index]], np.float32)
+#
+#                 faceGrid = self.makeGrid(self.metadata['labelFaceGrid'][index,:])
+#
+#                 # to tensor
+#                 row = torch.LongTensor([int(index)])
+#                 faceGrid = torch.FloatTensor(faceGrid)
+#                 gaze = torch.FloatTensor(gaze)
+#                 if_load = True
+#
+#             except Exception as e:
+#                 self.bad_counter += 1
+#                 # print ("self.bad_counter: ", self.bad_counter)
+#                 # print (e)
+#                 index += 1
+#                 # return None, None, None, None, None, None
+#
+#         return row, imFace, imEyeL, imEyeR, faceGrid, gaze
+#         # index,
