@@ -134,8 +134,11 @@ class ITrackerData(data.Dataset):
 		return grid
 
 	def check_indices(self):
+		print ("checking indices")
 		tmp_indices = []
 		for i in range(len(self.indices)):
+			if i % 100 == 0:
+				print (i)
 			index = self.indices[i]
 
 			imFacePath = os.path.join(DATASET_PATH, '%05d/appleFace/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
@@ -162,11 +165,12 @@ class ITrackerData(data.Dataset):
 				# print ("working: ", index)
 				tmp_indices.append(index)
 			except Exception as e:
-				print (e)
+				pass
+				# print (e)
 				# print ("failing: ", index)
 		self.indices = tmp_indices
 		pickle.dump(self.indices, open("indices.p", "wb"))
-		
+		print ("finish checking")
 	def __getitem__(self, index):
 		index = self.indices[index]
 
