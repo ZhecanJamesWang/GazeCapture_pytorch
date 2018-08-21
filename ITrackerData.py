@@ -106,7 +106,10 @@ class ITrackerData(data.Dataset):
 		self.indices = np.argwhere(mask)[:,0]
 		print('Loaded iTracker dataset split "%s" with %d records...' % (split, len(self.indices)))
 
-		self.check_indices(split)
+		try:
+			self.indices = pickle.load( open( split + "_indices_test.p", "rb" ) )
+		except Exception as e:
+			self.check_indices(split)
 
 	def loadImage(self, path):
 		try:
