@@ -106,7 +106,7 @@ class ITrackerData(data.Dataset):
 		self.indices = np.argwhere(mask)[:,0]
 		print('Loaded iTracker dataset split "%s" with %d records...' % (split, len(self.indices)))
 
-		self.check_indices()
+		self.check_indices(split)
 
 	def loadImage(self, path):
 		try:
@@ -133,7 +133,7 @@ class ITrackerData(data.Dataset):
 		grid[cond] = 1
 		return grid
 
-	def check_indices(self):
+	def check_indices(self, split):
 		print ("checking indices")
 		tmp_indices = []
 		for i in range(len(self.indices)):
@@ -173,7 +173,7 @@ class ITrackerData(data.Dataset):
 				break
 
 		self.indices = tmp_indices
-		pickle.dump(self.indices, open("indices_test.p", "wb"))
+		pickle.dump(self.indices, open(split + "_indices_test.p", "wb"))
 		print ("finish checking")
 
 	def __getitem__(self, index):
