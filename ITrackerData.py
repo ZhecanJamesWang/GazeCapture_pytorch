@@ -96,12 +96,14 @@ class ITrackerData(data.Dataset):
 		])
 
 
-		if split == 'test':
-			mask = self.metadata['labelTest']
-		elif split == 'val':
-			mask = self.metadata['labelVal']
-		else:
-			mask = self.metadata['labelTrain']
+		# if split == 'test':
+		# 	mask = self.metadata['labelTest']
+		# elif split == 'val':
+		# 	mask = self.metadata['labelVal']
+		# else:
+		# 	mask = self.metadata['labelTrain']
+
+		mask = self.metadata['labelVal']
 
 		self.indices = np.argwhere(mask)[:,0]
 		print (len(self.indices))
