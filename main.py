@@ -187,7 +187,7 @@ def train(train_loader, model, criterion, optimizer, epoch):
 
         count=count+1
 
-        train_loss.append(loss)
+        train_loss.append(loss.val)
 
         if i % 20 == 0:
             print ("train_loss: ", np.mean(train_loss))
@@ -247,7 +247,7 @@ def validate(val_loader, model, criterion, epoch):
         batch_time.update(time.time() - end)
         end = time.time()
 
-        val_loss.append(loss)
+        val_loss.append(loss.val)
 
         if i % 20 == 0:
             print ("val_loss: ", np.mean(val_loss))
