@@ -233,7 +233,7 @@ def validate(val_loader, model, criterion, epoch):
         lossLin = torch.sum(lossLin,1)
         lossLin = torch.mean(torch.sqrt(lossLin))
 
-        losses.update(oss.data[0], imFace.size(0))
+        losses.update(loss.data[0], imFace.size(0))
         lossesLin.update(lossLin.data[0], imFace.size(0))
 
         # compute gradient and do SGD step
