@@ -169,11 +169,11 @@ class ITrackerData(data.Dataset):
 				pass
 				# print (e)
 				# print ("failing: ", index)
-			if i > 3000:
+			if i > 2000:
 				break
 
 		self.indices = tmp_indices
-		pickle.dump(self.indices, open("indices.p", "wb"))
+		pickle.dump(self.indices, open("indices_test.p", "wb"))
 		print ("finish checking")
 
 	def __getitem__(self, index):
