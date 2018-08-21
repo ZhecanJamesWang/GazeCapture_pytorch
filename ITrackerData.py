@@ -116,9 +116,10 @@ class ITrackerData(data.Dataset):
 			im = Image.open(path).convert('RGB')
 			return im
 		except Exception as e:
-			print (e)
+			# print (e)
 		# except OSError:
-			raise RuntimeError('Could not read image: ' + path)
+			# raise RuntimeError('Could not read image: ' + path)
+			pass
 			#im = Image.new("RGB", self.imSize, "white")
 
 
@@ -172,6 +173,7 @@ class ITrackerData(data.Dataset):
 				pass
 				# print (e)
 				# print ("failing: ", index)
+
 			if i > 2000:
 				break
 
