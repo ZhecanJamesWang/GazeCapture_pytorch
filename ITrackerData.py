@@ -138,8 +138,8 @@ class ITrackerData(data.Dataset):
 		tmp_indices = []
 		for i in range(len(self.indices)):
 			if i % 1000 == 0:
-				print (i)
-				print (len(tmp_indices))
+				print ("i: ", i)
+				print ("len(tmp_indices): ", len(tmp_indices))
 			index = self.indices[i]
 
 			imFacePath = os.path.join(DATASET_PATH, '%05d/appleFace/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
