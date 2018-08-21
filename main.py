@@ -44,8 +44,8 @@ doTest = False # Only run test, no training
 
 workers = 8
 epochs = 100
-# batch_size = torch.cuda.device_count()*100 # Change if out of cuda memory
-batch_size = 10
+batch_size = torch.cuda.device_count()*100 # Change if out of cuda memory
+# batch_size = 10
 base_lr = 0.0001
 momentum = 0.9
 weight_decay = 1e-4
@@ -54,8 +54,8 @@ prec1 = 0
 best_prec1 = 1e20
 lr = base_lr
 
-count_test = 0
-count = 0
+# count_test = 0
+# count = 0
 #
 # def my_collate(batch):
 #     batch = filter (lambda x:x is not None, batch)
@@ -89,20 +89,20 @@ def main():
 
 
     dataTrain = ITrackerData(split='train', imSize = imSize)
+    raise "debug"
+    
     dataVal = ITrackerData(split='test', imSize = imSize)
 
     train_loader = torch.utils.data.DataLoader(
         dataTrain,
         batch_size=batch_size, shuffle=False,
         num_workers=workers, pin_memory=True)
-        # , collate_fn=my_collate
 
     val_loader = torch.utils.data.DataLoader(
         dataVal,
         batch_size=batch_size, shuffle=False,
         num_workers=workers, pin_memory=True)
 
-    print ("------------------------------------")
 
     criterion = nn.MSELoss().cuda()
 
@@ -116,8 +116,8 @@ def main():
         validate(val_loader, model, criterion, epoch)
         return
 
-    for epoch in range(0, epoch):
-        adjust_learning_rate(optimizer, epoch)
+    # for epoch in range(0, epoch):
+    #     adjust_learning_rate(optimizer, epoch)
 
     for epoch in range(epoch, epochs):
         print ("epoch: ", epoch)
@@ -140,7 +140,7 @@ def main():
 
 
 def train(train_loader, model, criterion, optimizer, epoch):
-    global count
+    # global count
     batch_time = AverageMeter()
     data_time = AverageMeter()
     losses = AverageMeter()
@@ -185,11 +185,11 @@ def train(train_loader, model, criterion, optimizer, epoch):
         batch_time.update(time.time() - end)
         end = time.time()
 
-        count=count+1
+        # count=count+1
 
         train_loss.append(loss.data[0])
 
-        if i % 20 == 0:
+        if i % 100 == 0:
             print (loss.data.shape)
             print ("train_loss: ", np.mean(train_loss))
             # print('Epoch (train): [{0}][{1}/{2}]\t'
@@ -201,7 +201,7 @@ def train(train_loader, model, criterion, optimizer, epoch):
         # i += 1
 
 def validate(val_loader, model, criterion, epoch):
-    global count_test
+    # global count_test
     batch_time = AverageMeter()
     data_time = AverageMeter()
     losses = AverageMeter()
@@ -250,7 +250,7 @@ def validate(val_loader, model, criterion, epoch):
 
         val_loss.append(loss.data[0])
 
-        if i % 20 == 0:
+        if i % 100 == 0:
             print ("val_loss: ", np.mean(val_loss))
             # print('Epoch (val): [{0}][{1}/{2}]\t'
             #           'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
