@@ -187,9 +187,10 @@ def train(train_loader, model, criterion, optimizer, epoch):
 
         count=count+1
 
-        train_loss.append(loss.val)
+        train_loss.append(loss.data[0])
 
         if i % 20 == 0:
+            print loss.data.shape
             print ("train_loss: ", np.mean(train_loss))
             # print('Epoch (train): [{0}][{1}/{2}]\t'
             #           'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
@@ -247,7 +248,7 @@ def validate(val_loader, model, criterion, epoch):
         batch_time.update(time.time() - end)
         end = time.time()
 
-        val_loss.append(loss.val)
+        val_loss.append(loss.data[0])
 
         if i % 20 == 0:
             print ("val_loss: ", np.mean(val_loss))
