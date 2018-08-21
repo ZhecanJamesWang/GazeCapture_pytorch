@@ -60,6 +60,8 @@ count = 0
 # def my_collate(batch):
 #     batch = filter (lambda x:x is not None, batch)
 #     return default_collate(batch)
+train_loss = []
+val_loss = []
 
 def main():
     global args, best_prec1, weight_decay, momentum
@@ -137,7 +139,7 @@ def main():
         }, is_best)
 
 
-def train(train_loader, model, criterion,optimizer, epoch):
+def train(train_loader, model, criterion, optimizer, epoch):
     global count
     batch_time = AverageMeter()
     data_time = AverageMeter()
@@ -185,13 +187,16 @@ def train(train_loader, model, criterion,optimizer, epoch):
 
         count=count+1
 
-        if i % 10 == 0:
-            print('Epoch (train): [{0}][{1}/{2}]\t'
-                      'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
-                      'Data {data_time.val:.3f} ({data_time.avg:.3f})\t'
-                      'Loss {loss.val:.4f} ({loss.avg:.4f})\t'.format(
-                       epoch, i, len(train_loader), batch_time=batch_time,
-                       data_time=data_time, loss=losses))
+        train_loss.append(loss)
+
+        if i % 20 == 0:
+            print ("train_loss: ", np.mean(train_loss))
+            # print('Epoch (train): [{0}][{1}/{2}]\t'
+            #           'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
+            #           'Data {data_time.val:.3f} ({data_time.avg:.3f})\t'
+            #           'Loss {loss.val:.4f} ({loss.avg:.4f})\t'.format(
+            #            epoch, i, len(train_loader), batch_time=batch_time,
+            #            data_time=data_time, loss=losses))
         # i += 1
 
 def validate(val_loader, model, criterion, epoch):
@@ -217,7 +222,7 @@ def validate(val_loader, model, criterion, epoch):
         imEyeR = imEyeR.cuda(async=True)
         faceGrid = faceGrid.cuda(async=True)
         gaze = gaze.cuda(async=True)
-
+# TODO:
         imFace = torch.autograd.Variable(imFace, volatile = True)
         imEyeL = torch.autograd.Variable(imEyeL, volatile = True)
         imEyeR = torch.autograd.Variable(imEyeR, volatile = True)
@@ -242,13 +247,16 @@ def validate(val_loader, model, criterion, epoch):
         batch_time.update(time.time() - end)
         end = time.time()
 
-        if i % 10 == 0:
-            print('Epoch (val): [{0}][{1}/{2}]\t'
-                      'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
-                      'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
-                      'Error L2 {lossLin.val:.4f} ({lossLin.avg:.4f})\t'.format(
-                        epoch, i, len(val_loader), batch_time=batch_time,
-                       loss=losses,lossLin=lossesLin))
+        val_loss.append(loss)
+
+        if i % 20 == 0:
+            print ("val_loss: ", np.mean(val_loss))
+            # print('Epoch (val): [{0}][{1}/{2}]\t'
+            #           'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
+            #           'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
+            #           'Error L2 {lossLin.val:.4f} ({lossLin.avg:.4f})\t'.format(
+            #             epoch, i, len(val_loader), batch_time=batch_time,
+            #            loss=losses,lossLin=lossesLin))
         # i += 1
 
     return lossesLin.avg
