@@ -88,10 +88,10 @@ def main():
             print('Warning: Could not read checkpoint!');
 
 
-    dataTrain = ITrackerData(split='train', imSize = imSize)
-    raise "debug"
-    
+    # dataTrain = ITrackerData(split='train', imSize = imSize)
+
     dataVal = ITrackerData(split='test', imSize = imSize)
+    raise "debug"
 
     train_loader = torch.utils.data.DataLoader(
         dataTrain,

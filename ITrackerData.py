@@ -103,7 +103,9 @@ class ITrackerData(data.Dataset):
 		# else:
 		# 	mask = self.metadata['labelTrain']
 
-		mask = self.metadata['labelTrain']
+		mask = self.metadata['labelTest']
+
+		# mask = self.metadata['labelTrain']
 
 		self.indices = np.argwhere(mask)[:,0]
 
@@ -118,7 +120,6 @@ class ITrackerData(data.Dataset):
 		# 	self.indices = pickle.load( open( split + "_indices_test.p", "rb" ) )
 		# except Exception as e:
 
-		self.error_ids = []
 		self.check_indices(split)
 
 	def loadImage(self, path):
@@ -154,40 +155,38 @@ class ITrackerData(data.Dataset):
 			if i % 1000 == 0:
 				print ("i: ", i)
 				print ("len(tmp_indices): ", len(tmp_indices))
+
 			index = self.indices[i]
-			if self.metadata['labelRecNum'][index] in self.error_ids:
+			imFacePath = os.path.join(DATASET_PATH, '%05d/appleFace/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+			imEyeLPath = os.path.join(DATASET_PATH, '%05d/appleLeftEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+			imEyeRPath = os.path.join(DATASET_PATH, '%05d/appleRightEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+
+			try:
+				imFace = self.loadImage(imFacePath)
+				imEyeL = self.loadImage(imEyeLPath)
+				imEyeR = self.loadImage(imEyeRPath)
+
+				imFace = self.transformFace(imFace)
+				imEyeL = self.transformEyeL(imEyeL)
+				imEyeR = self.transformEyeR(imEyeR)
+
+				gaze = np.array([self.metadata['labelDotXCam'][index], self.metadata['labelDotYCam'][index]], np.float32)
+
+				faceGrid = self.makeGrid(self.metadata['labelFaceGrid'][index,:])
+
+				# to tensor
+				row = torch.LongTensor([int(index)])
+				faceGrid = torch.FloatTensor(faceGrid)
+				gaze = torch.FloatTensor(gaze)
+				# print ("working: ", index)
+				tmp_indices.append(index)
+			except Exception as e:
 				pass
-			else:
-				imFacePath = os.path.join(DATASET_PATH, '%05d/appleFace/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
-				imEyeLPath = os.path.join(DATASET_PATH, '%05d/appleLeftEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
-				imEyeRPath = os.path.join(DATASET_PATH, '%05d/appleRightEye/%05d.jpg' % (self.metadata['labelRecNum'][index], self.metadata['frameIndex'][index]))
+				# print (e)
+				# print ("failing: ", index)
 
-				try:
-					imFace = self.loadImage(imFacePath)
-					imEyeL = self.loadImage(imEyeLPath)
-					imEyeR = self.loadImage(imEyeRPath)
-
-					imFace = self.transformFace(imFace)
-					imEyeL = self.transformEyeL(imEyeL)
-					imEyeR = self.transformEyeR(imEyeR)
-
-					gaze = np.array([self.metadata['labelDotXCam'][index], self.metadata['labelDotYCam'][index]], np.float32)
-
-					faceGrid = self.makeGrid(self.metadata['labelFaceGrid'][index,:])
-
-					# to tensor
-					row = torch.LongTensor([int(index)])
-					faceGrid = torch.FloatTensor(faceGrid)
-					gaze = torch.FloatTensor(gaze)
-					# print ("working: ", index)
-					tmp_indices.append(index)
-				except Exception as e:
-					self.error_ids.append(self.metadata['labelRecNum'][index])
-					# print (e)
-					# print ("failing: ", index)
-
-				# if i > 2000:
-				# 	break
+			# if i > 2000:
+			# 	break
 
 		self.indices = tmp_indices
 		pickle.dump(self.indices, open(split + "_indices_test.p", "wb"))
