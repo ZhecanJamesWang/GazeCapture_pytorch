@@ -108,7 +108,7 @@ class ITrackerData(data.Dataset):
 		# self.indices = np.argwhere(mask)[:,0]
 
 
-		print('Loaded iTracker dataset split "%s" with %d records...' % (split, len(self.indices)))
+		# print('Loaded iTracker dataset split "%s" with %d records...' % (split, len(self.indices)))
 
 		self.indices = pickle.load( open( "indices.p", "rb" ) )
 
