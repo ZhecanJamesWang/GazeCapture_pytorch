@@ -103,21 +103,21 @@ class ITrackerData(data.Dataset):
 		# else:
 		# 	mask = self.metadata['labelTrain']
 
-		# mask = self.metadata['labelVal']
+		mask = self.metadata['labelTrain']
+
+		self.indices = np.argwhere(mask)[:,0]
+
+
+		print('Loaded iTracker dataset split "%s" with %d records...' % (split, len(self.indices)))
+
+		# self.indices = pickle.load( open( "indices.p", "rb" ) )
 		#
-		# self.indices = np.argwhere(mask)[:,0]
+		# print (len(self.indices))
 
-
-		# print('Loaded iTracker dataset split "%s" with %d records...' % (split, len(self.indices)))
-
-		self.indices = pickle.load( open( "indices.p", "rb" ) )
-
-		print (len(self.indices))
-		raise "debug"
 		# try:
 		# 	self.indices = pickle.load( open( split + "_indices_test.p", "rb" ) )
 		# except Exception as e:
-		# 	self.check_indices(split)
+		self.check_indices(split)
 
 	def loadImage(self, path):
 		try:
