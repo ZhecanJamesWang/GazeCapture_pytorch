@@ -182,8 +182,8 @@ class ITrackerData(data.Dataset):
 				# print (e)
 				# print ("failing: ", index)
 
-			if i > 2000:
-				break
+			# if i > 2000:
+			# 	break
 
 		self.indices = tmp_indices
 		pickle.dump(self.indices, open(split + "_indices_test.p", "wb"))
