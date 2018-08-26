@@ -149,9 +149,8 @@ def train(train_loader, model, criterion, optimizer, epoch, val_loader):
     iter = 0
     for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(train_loader):
 
-        print (imFace.shape)
-        print (len(i))
-
+        print (" i: ", i)
+        
         # measure data loading time
         data_time.update(time.time() - end)
         imFace = imFace.cuda(async=True)
