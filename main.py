@@ -54,12 +54,6 @@ prec1 = 0
 best_prec1 = 1e20
 lr = base_lr
 
-# count_test = 0
-# count = 0
-#
-# def my_collate(batch):
-#     batch = filter (lambda x:x is not None, batch)
-#     return default_collate(batch)
 train_loss = []
 val_loss = []
 
@@ -152,11 +146,12 @@ def train(train_loader, model, criterion, optimizer, epoch, val_loader):
 
     end = time.time()
 
+    iter = 0
     for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(train_loader):
-    # i = 0
-    # while i <= len(train_loader):
-        # i, row, imFace, imEyeL, imEyeR, faceGrid, gaze = train_loader.__getitem__(i)
-        # print ("get item, i: ", i)
+
+        print (imFace.shape)
+        print (len(i))
+
         # measure data loading time
         data_time.update(time.time() - end)
         imFace = imFace.cuda(async=True)
@@ -191,9 +186,19 @@ def train(train_loader, model, criterion, optimizer, epoch, val_loader):
 
         train_loss.append(loss.data[0])
 
+
         if i % 10 == 0:
             print ("train_loss: ", np.mean(train_loss))
             prec1 = validate(val_loader, model, criterion, epoch)
+
+            save_checkpoint(False, epoch, iter, {
+                'epoch': epoch + 1,
+                'state_dict': model.state_dict(),
+                'best_prec1': None,
+            })
+
+        iter += 1
+
 
             # print('Epoch (train): [{0}][{1}/{2}]\t'
             #           'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
@@ -215,9 +220,6 @@ def validate(val_loader, model, criterion, epoch):
     end = time.time()
 
 
-    # i = 0
-    # while i <= len(val_loader):
-    #     i, row, imFace, imEyeL, imEyeR, faceGrid, gaze = val_loader.__getitem__(i)
     for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(val_loader):
         # measure data loading time
         data_time.update(time.time() - end)
@@ -279,7 +281,7 @@ def save_checkpoint(is_best, epoch, iter, state = None, filename='checkpoint.pth
     if not os.path.isdir(CHECKPOINTS_PATH):
         os.makedirs(CHECKPOINTS_PATH, 0o777)
     bestFilename = os.path.join(CHECKPOINTS_PATH, 'best_' + filename)
-    filename = os.path.join(CHECKPOINTS_PATH, filename)
+    filename = os.path.join(CHECKPOINTS_PATH, epoch + "_" + iter + "_" + filename)
     torch.save(state, filename)
     if is_best:
         shutil.copyfile(filename, bestFilename)

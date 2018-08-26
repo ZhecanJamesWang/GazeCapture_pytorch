@@ -105,7 +105,7 @@ class ITrackerData(data.Dataset):
 			pass
 		else:
 			# mask = self.metadata['labelTrain']
-			self.indices = pickle.load( open( "train_Indices.p", "rb" ) )
+			self.indices = pickle.load( open( "train_Indices.p", "rb" ) )[:1000]
 
 		# self.indices = np.argwhere(mask)[:,0]
 
