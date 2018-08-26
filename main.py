@@ -150,7 +150,7 @@ def train(train_loader, model, criterion, optimizer, epoch, val_loader):
     for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(train_loader):
 
         print (" i: ", i)
-        
+
         # measure data loading time
         data_time.update(time.time() - end)
         imFace = imFace.cuda(async=True)
@@ -280,7 +280,7 @@ def save_checkpoint(is_best, epoch, iter, state = None, filename='checkpoint.pth
     if not os.path.isdir(CHECKPOINTS_PATH):
         os.makedirs(CHECKPOINTS_PATH, 0o777)
     bestFilename = os.path.join(CHECKPOINTS_PATH, 'best_' + filename)
-    filename = os.path.join(CHECKPOINTS_PATH, epoch + "_" + iter + "_" + filename)
+    filename = os.path.join(CHECKPOINTS_PATH, str(epoch) + "_" + str(iter) + "_" + filename)
     torch.save(state, filename)
     if is_best:
         shutil.copyfile(filename, bestFilename)
