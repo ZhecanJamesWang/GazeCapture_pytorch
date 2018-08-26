@@ -37,6 +37,7 @@ Booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}
 
 '''
 
+print ("testing !!!!!!!!")
 
 # Change there flags to control what happens.
 doLoad = False # Load checkpoint at the beginning
