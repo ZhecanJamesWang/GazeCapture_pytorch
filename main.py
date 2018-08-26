@@ -126,7 +126,7 @@ def main():
         adjust_learning_rate(optimizer, epoch)
 
         # train for one epoch
-        train(train_loader, model, criterion, optimizer, epoch)
+        train(train_loader, model, criterion, optimizer, epoch, val_loader)
 
         # evaluate on validation set
         prec1 = validate(val_loader, model, criterion, epoch)
@@ -134,14 +134,14 @@ def main():
         # remember best prec@1 and save checkpoint
         is_best = prec1 < best_prec1
         best_prec1 = min(prec1, best_prec1)
-        save_checkpoint({
+        save_checkpoint(is_best, epoch, "max", {
             'epoch': epoch + 1,
             'state_dict': model.state_dict(),
             'best_prec1': best_prec1,
-        }, is_best)
+        })
 
 
-def train(train_loader, model, criterion, optimizer, epoch):
+def train(train_loader, model, criterion, optimizer, epoch, val_loader):
     # global count
     batch_time = AverageMeter()
     data_time = AverageMeter()
@@ -191,9 +191,10 @@ def train(train_loader, model, criterion, optimizer, epoch):
 
         train_loss.append(loss.data[0])
 
-        if i % 100 == 0:
-            print (loss.data.shape)
+        if i % 10 == 0:
             print ("train_loss: ", np.mean(train_loss))
+            prec1 = validate(val_loader, model, criterion, epoch)
+
             # print('Epoch (train): [{0}][{1}/{2}]\t'
             #           'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
             #           'Data {data_time.val:.3f} ({data_time.avg:.3f})\t'
@@ -252,7 +253,7 @@ def validate(val_loader, model, criterion, epoch):
 
         val_loss.append(loss.data[0])
 
-        if i % 100 == 0:
+        if i % 10 == 0:
             print ("val_loss: ", np.mean(val_loss))
             # print('Epoch (val): [{0}][{1}/{2}]\t'
             #           'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
@@ -264,7 +265,7 @@ def validate(val_loader, model, criterion, epoch):
 
     return lossesLin.avg
 
-CHECKPOINTS_PATH = '.'
+CHECKPOINTS_PATH = 'my_model/'
 
 def load_checkpoint(filename='checkpoint.pth.tar'):
     filename = os.path.join(CHECKPOINTS_PATH, filename)
@@ -274,7 +275,7 @@ def load_checkpoint(filename='checkpoint.pth.tar'):
     state = torch.load(filename)
     return state
 
-def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
+def save_checkpoint(is_best, epoch, iter, state = None, filename='checkpoint.pth.tar'):
     if not os.path.isdir(CHECKPOINTS_PATH):
         os.makedirs(CHECKPOINTS_PATH, 0o777)
     bestFilename = os.path.join(CHECKPOINTS_PATH, 'best_' + filename)

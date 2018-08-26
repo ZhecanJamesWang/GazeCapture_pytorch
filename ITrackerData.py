@@ -98,7 +98,7 @@ class ITrackerData(data.Dataset):
 
 		if split == 'test':
 			# mask = self.metadata['labelTest']
-			self.indices = pickle.load( open( "test_Indices.p", "rb" ) )
+			self.indices = pickle.load( open( "test_Indices.p", "rb" ) )[:1000]
 
 		elif split == 'val':
 			# mask = self.metadata['labelVal']
