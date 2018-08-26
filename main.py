@@ -186,7 +186,7 @@ def train(train_loader, model, criterion, optimizer, epoch, val_loader):
         train_loss.append(loss.data[0])
 
 
-        if i % 10 == 0:
+        if i % 1 == 0:
             print ("train_loss: ", np.mean(train_loss))
             prec1 = validate(val_loader, model, criterion, epoch)
 
@@ -254,7 +254,7 @@ def validate(val_loader, model, criterion, epoch):
 
         val_loss.append(loss.data[0])
 
-        if i % 10 == 0:
+        if i % 1 == 0:
             print ("val_loss: ", np.mean(val_loss))
             # print('Epoch (val): [{0}][{1}/{2}]\t'
             #           'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
