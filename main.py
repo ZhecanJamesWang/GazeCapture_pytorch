@@ -54,9 +54,6 @@ prec1 = 0
 best_prec1 = 1e20
 lr = base_lr
 
-train_loss = []
-val_loss = []
-
 def main():
     global args, best_prec1, weight_decay, momentum
 
@@ -146,6 +143,8 @@ def train(train_loader, model, criterion, optimizer, epoch, val_loader):
 
     end = time.time()
 
+    train_loss = []
+
     for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(train_loader):
 
         # measure data loading time
@@ -214,6 +213,7 @@ def validate(val_loader, model, criterion, epoch):
     model.eval()
     end = time.time()
 
+    val_loss = []
 
     for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(val_loader):
         # measure data loading time
