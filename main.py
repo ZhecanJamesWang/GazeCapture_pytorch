@@ -146,10 +146,7 @@ def train(train_loader, model, criterion, optimizer, epoch, val_loader):
 
     end = time.time()
 
-    iter = 0
     for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(train_loader):
-
-        print (" i: ", i)
 
         # measure data loading time
         data_time.update(time.time() - end)
@@ -190,13 +187,12 @@ def train(train_loader, model, criterion, optimizer, epoch, val_loader):
             print ("train_loss: ", np.mean(train_loss))
             # prec1 = validate(val_loader, model, criterion, epoch)
 
-            # save_checkpoint(False, epoch, iter, {
+            # save_checkpoint(False, epoch, i, {
             #     'epoch': epoch + 1,
             #     'state_dict': model.state_dict(),
             #     'best_prec1': None,
             # })
 
-        iter += 1
 
 
             # print('Epoch (train): [{0}][{1}/{2}]\t'
