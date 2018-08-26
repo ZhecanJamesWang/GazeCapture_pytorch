@@ -37,8 +37,6 @@ Booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}
 
 '''
 
-print ("testing !!!!!!!!")
-
 # Change there flags to control what happens.
 doLoad = False # Load checkpoint at the beginning
 doTest = False # Only run test, no training
@@ -113,7 +111,7 @@ def main():
 
     print ("================== batch_size ==================")
     print ("==================", batch_size, "==================")
-    
+
     # Quick test
     if doTest:
         print ("validate: ")
