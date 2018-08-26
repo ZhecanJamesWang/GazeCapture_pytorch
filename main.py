@@ -188,13 +188,13 @@ def train(train_loader, model, criterion, optimizer, epoch, val_loader):
 
         if i % 1 == 0:
             print ("train_loss: ", np.mean(train_loss))
-            prec1 = validate(val_loader, model, criterion, epoch)
+            # prec1 = validate(val_loader, model, criterion, epoch)
 
-            save_checkpoint(False, epoch, iter, {
-                'epoch': epoch + 1,
-                'state_dict': model.state_dict(),
-                'best_prec1': None,
-            })
+            # save_checkpoint(False, epoch, iter, {
+            #     'epoch': epoch + 1,
+            #     'state_dict': model.state_dict(),
+            #     'best_prec1': None,
+            # })
 
         iter += 1
 
