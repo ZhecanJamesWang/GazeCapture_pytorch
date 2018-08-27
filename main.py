@@ -76,7 +76,7 @@ class Gaze(object):
         self.print_freq = 10
         self.prec1 = 0
         self.best_prec1 = 1e20
-        self.lr = base_lr
+        self.lr = self.base_lr
 
 
         self.train_loss_his, self.prec1_his, self.val_error_his = [], [], []
