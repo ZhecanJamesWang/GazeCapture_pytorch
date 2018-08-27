@@ -242,7 +242,7 @@ class Gaze(object):
 						   epoch, i, len(train_loader), batch_time=batch_time,
 						   data_time=data_time, loss=losses))
 
-				print ("prec1: ", prec1)
+				print ("prec1.item: ", prec1.item())
 				print ("prec1: ", prec1.data[0])
 				print ("prec1: ", prec1[0])
 
