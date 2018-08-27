@@ -250,7 +250,7 @@ class Gaze(object):
 				print (self.val_error_his[:10])
 				print (self.prec1_his[:10])
 
-				self.plot_loss(self.train_loss_his, self.val_error_his, self.prec1_his, save_file = self.plot_ckpt + "/cumul_loss_" + str(epoch) + "_" + str(i) + ".png")
+				self.plot_loss(np.array(self.train_loss_his), np.array(self.val_error_his), np.array(self.prec1_his), save_file = self.plot_ckpt + "/cumul_loss_" + str(epoch) + "_" + str(i) + ".png")
 
 	def validate(self, val_loader, model, criterion, epoch):
 		print ("----validate----")
