@@ -138,7 +138,7 @@ def main():
         # remember best prec@1 and save checkpoint
         is_best = prec1 < best_prec1
         best_prec1 = min(prec1, best_prec1)
-        save_checkpoint(is_best, epoch, "max",  prec1, val_error， {
+        save_checkpoint(is_best, epoch, "max",  prec1, val_error, {
             'epoch': epoch + 1,
             'state_dict': model.state_dict(),
             'best_prec1': best_prec1,
