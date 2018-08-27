@@ -246,6 +246,11 @@ class Gaze(object):
 				self.val_error_his.append(val_error)
 				self.prec1_his.append(prec1)
 
+				print (self.train_loss_his[:10])
+				print (self.val_error_his[:10])
+				print (self.prec1_his[:10])
+				raise "debug"
+
 				self.plot_loss(self.train_loss_his, self.val_error_his, self.prec1_his, save_file = self.plot_ckpt + "/cumul_loss_" + str(epoch) + "_" + str(i) + ".png")
 
 	def validate(self, val_loader, model, criterion, epoch):
