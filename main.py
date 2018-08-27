@@ -189,7 +189,7 @@ class Gaze(object):
 		train_loss = []
 
 		for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(train_loader):
-
+			
 			# measure data loading time
 			data_time.update(time.time() - end)
 			imFace = imFace.cuda(async=True)
