@@ -151,7 +151,7 @@ class Gaze(object):
 
         for epoch in range(epoch, self.epochs):
             print ("epoch: ", epoch)
-            adjust_learning_rate(optimizer, epoch)
+            self.adjust_learning_rate(optimizer, epoch)
 
             # train for one epoch
             train(train_loader, model, criterion, optimizer, epoch, val_loader)
