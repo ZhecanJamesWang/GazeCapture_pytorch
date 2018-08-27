@@ -138,7 +138,7 @@ class Gaze(object):
                                     weight_decay=self.weight_decay)
 
         print ("================== batch_size ==================")
-        print ("==================", batch_size, "==================")
+        print ("==================", self.batch_size, "==================")
 
         # Quick test
         if self.doTest:
