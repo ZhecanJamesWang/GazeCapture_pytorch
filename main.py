@@ -353,5 +353,5 @@ class Gaze(object):
 
 
 if __name__ == "__main__":
-    Gaze().man()
+    Gaze().main()
     print('DONE')
