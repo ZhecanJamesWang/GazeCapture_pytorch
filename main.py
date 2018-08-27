@@ -304,8 +304,7 @@ class Gaze(object):
 
 			# if i % 10 == 0:
 		print ("val_loss: ", np.mean(val_loss))
-		print('Epoch (val):
-				  'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
+		print('Epoch (val): Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
 				  'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
 				  'Error L2 {lossLin.val:.4f} ({lossLin.avg:.4f})\t'.format(
 				  batch_time=batch_time,loss=losses,lossLin=lossesLin))
