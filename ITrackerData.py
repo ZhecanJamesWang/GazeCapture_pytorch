@@ -100,14 +100,16 @@ class ITrackerData(data.Dataset):
 			# mask = self.metadata['labelTest']
 			# self.indices = pickle.load( open( "test_Indices.p", "rb" ) )[:1000]
 
-			self.indices = pickle.load( open( "train_Indices.p", "rb" ) )[1000:1100]
+			self.indices = pickle.load( open( "train_Indices.p", "rb" ) )
+			# [1000:1100]
 
 		elif split == 'val':
 			# mask = self.metadata['labelVal']
 			pass
 		else:
 			# mask = self.metadata['labelTrain']
-			self.indices = pickle.load( open( "train_Indices.p", "rb" ) )[:1000]
+			self.indices = pickle.load( open( "train_Indices.p", "rb" ) )
+			# [:1000]
 
 		# self.indices = np.argwhere(mask)[:,0]
 

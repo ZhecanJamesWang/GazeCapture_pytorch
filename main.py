@@ -54,6 +54,10 @@ prec1 = 0
 best_prec1 = 1e20
 lr = base_lr
 
+
+
+train_loss_his, prec1_his, val_error_his = [], [], []
+
 def main():
     global args, best_prec1, weight_decay, momentum
 
@@ -120,12 +124,12 @@ def main():
         train(train_loader, model, criterion, optimizer, epoch, val_loader)
 
         # evaluate on validation set
-        prec1 = validate(val_loader, model, criterion, epoch)
+        (prec1, val_error) = validate(val_loader, model, criterion, epoch)
 
         # remember best prec@1 and save checkpoint
         is_best = prec1 < best_prec1
         best_prec1 = min(prec1, best_prec1)
-        save_checkpoint(is_best, epoch, "max", {
+        save_checkpoint(is_best, epoch, "max",  prec1, val_error， {
             'epoch': epoch + 1,
             'state_dict': model.state_dict(),
             'best_prec1': best_prec1,
@@ -177,30 +181,32 @@ def train(train_loader, model, criterion, optimizer, epoch, val_loader):
         batch_time.update(time.time() - end)
         end = time.time()
 
-        # count=count+1
-
         train_loss.append(loss.data[0])
 
 
-        if i % 1 == 0:
-            print ("train_loss: ", np.mean(train_loss))
-            # prec1 = validate(val_loader, model, criterion, epoch)
+        if i % 10 == 0:
+            train_loss_mean = np.mean(train_loss)
+            print ("train_loss: ", train_loss_mean)
+            (prec1, val_error) = validate(val_loader, model, criterion, epoch)
 
-            # save_checkpoint(False, epoch, i, {
-            #     'epoch': epoch + 1,
-            #     'state_dict': model.state_dict(),
-            #     'best_prec1': None,
-            # })
+            save_checkpoint(False, epoch, i, prec1, val_error， {
+                'epoch': epoch + 1,
+                'state_dict': model.state_dict(),
+                'best_prec1': None,
+            })
 
+            print('Epoch (train): [{0}][{1}/{2}]\t'
+                      'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
+                      'Data {data_time.val:.3f} ({data_time.avg:.3f})\t'
+                      'Loss {loss.val:.4f} ({loss.avg:.4f})\t'.format(
+                       epoch, i, len(train_loader), batch_time=batch_time,
+                       data_time=data_time, loss=losses))
 
+            train_loss_his.append(train_loss_mean)
+            val_error_his.append(val_error)
+            prec1_his.append(prec1)
 
-            # print('Epoch (train): [{0}][{1}/{2}]\t'
-            #           'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
-            #           'Data {data_time.val:.3f} ({data_time.avg:.3f})\t'
-            #           'Loss {loss.val:.4f} ({loss.avg:.4f})\t'.format(
-            #            epoch, i, len(train_loader), batch_time=batch_time,
-            #            data_time=data_time, loss=losses))
-        # i += 1
+            plot_loss(train_loss_his, val_error_his, prec1_his)
 
 def validate(val_loader, model, criterion, epoch):
     # global count_test
@@ -250,17 +256,17 @@ def validate(val_loader, model, criterion, epoch):
 
         val_loss.append(loss.data[0])
 
-        if i % 1 == 0:
-            print ("val_loss: ", np.mean(val_loss))
-            # print('Epoch (val): [{0}][{1}/{2}]\t'
-            #           'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
-            #           'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
-            #           'Error L2 {lossLin.val:.4f} ({lossLin.avg:.4f})\t'.format(
-            #             epoch, i, len(val_loader), batch_time=batch_time,
-            #            loss=losses,lossLin=lossesLin))
+        # if i % 10 == 0:
+    print ("val_loss: ", np.mean(val_loss))
+    print('Epoch (val): [{0}][{1}/{2}]\t'
+              'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
+              'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
+              'Error L2 {lossLin.val:.4f} ({lossLin.avg:.4f})\t'.format(
+                epoch, i, len(val_loader), batch_time=batch_time,
+               loss=losses,lossLin=lossesLin))
         # i += 1
-
-    return lossesLin.avg
+    print ("val_loss: ", np.mean(val_loss))
+    return (lossesLin.avg, np.mean(val_loss))
 
 CHECKPOINTS_PATH = 'my_model/'
 
@@ -272,15 +278,39 @@ def load_checkpoint(filename='checkpoint.pth.tar'):
     state = torch.load(filename)
     return state
 
-def save_checkpoint(is_best, epoch, iter, state = None, filename='checkpoint.pth.tar'):
+def save_checkpoint(is_best, epoch, iter, prec1, val_error, state = None, filename='checkpoint.pth.tar'):
     if not os.path.isdir(CHECKPOINTS_PATH):
         os.makedirs(CHECKPOINTS_PATH, 0o777)
     bestFilename = os.path.join(CHECKPOINTS_PATH, 'best_' + filename)
-    filename = os.path.join(CHECKPOINTS_PATH, str(epoch) + "_" + str(iter) + "_" + filename)
+    filename = os.path.join(CHECKPOINTS_PATH, str(epoch) + "_" + prec1 + "_" + val_error + str(iter) + "_" + filename)
     torch.save(state, filename)
     if is_best:
         shutil.copyfile(filename, bestFilename)
 
+
+def plot_loss(train_loss_his, val_error_his, prec1_his, start=0, per=1, save_file='loss.png'):
+	idx = np.arange(start, len(train_loss_his), per)
+	fig, ax1 = plt.subplots()
+	lns1 = ax1.plot(idx, train_loss_his[idx], 'b-', alpha=1.0, label='train loss')
+	ax1.set_xlabel('epochs')
+	# Make the y-axis label, ticks and tick labels match the line color.
+	ax1.set_ylabel('loss', color='b')
+	ax1.tick_params('y', colors='b')
+
+	ax2 = ax1.twinx()
+	lns2 = ax2.plot(idx, val_error_his[idx], 'r-', alpha=1.0, label='val error')
+	lns3 = ax2.plot(idx, prec1_his[idx], 'g-', alpha=1.0, label='prec1')
+	ax2.set_ylabel('error', color='r')
+	ax2.tick_params('y', colors='r')
+
+	# added these three lines
+	lns = lns1 + lns2 + lns3
+	labs = [l.get_label() for l in lns]
+	ax1.legend(lns, labs, loc=0)
+
+	fig.tight_layout()
+	plt.savefig(save_file)
+	# plt.show()
 
 class AverageMeter(object):
     """Computes and stores the average and current value"""
