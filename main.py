@@ -166,7 +166,7 @@ class Gaze(object):
 			# remember best prec@1 and save checkpoint
 			is_best = prec1 < self.best_prec1
 			self.best_prec1 = min(prec1, self.best_prec1)
-			save_checkpoint(is_best, epoch, "max",  prec1, val_error, {
+			self.save_checkpoint(is_best, epoch, "max",  prec1, val_error, {
 				'epoch': epoch + 1,
 				'state_dict': model.state_dict(),
 				'best_prec1': self.best_prec1,
@@ -189,7 +189,7 @@ class Gaze(object):
 		train_loss = []
 
 		for i, (row, imFace, imEyeL, imEyeR, faceGrid, gaze) in enumerate(train_loader):
-			
+
 			# measure data loading time
 			data_time.update(time.time() - end)
 			imFace = imFace.cuda(async=True)
@@ -228,7 +228,7 @@ class Gaze(object):
 				print ("train_loss: ", train_loss_mean)
 				(prec1, val_error) = self.validate(val_loader, model, criterion, epoch)
 
-				save_checkpoint(False, epoch, i, prec1, val_error, {
+				self.save_checkpoint(False, epoch, i, prec1, val_error, {
 					'epoch': epoch + 1,
 					'state_dict': model.state_dict(),
 					'best_prec1': None,
