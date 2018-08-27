@@ -229,7 +229,7 @@ class Gaze(object):
 				print ("train_loss: ", train_loss_mean)
 				(prec1, val_error) = self.validate(val_loader, model, criterion, epoch)
 
-				self.save_checkpoint(False, epoch, i, prec1, val_error, {
+				self.save_checkpoint(False, epoch, i, int(prec1.item()), int(val_error), {
 					'epoch': epoch + 1,
 					'state_dict': model.state_dict(),
 					'best_prec1': None,
