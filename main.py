@@ -198,7 +198,7 @@ def train(train_loader, model, criterion, optimizer, epoch, val_loader):
             print ("train_loss: ", train_loss_mean)
             (prec1, val_error) = validate(val_loader, model, criterion, epoch)
 
-            save_checkpoint(False, epoch, i, prec1, val_error， {
+            save_checkpoint(False, epoch, i, prec1, val_error, {
                 'epoch': epoch + 1,
                 'state_dict': model.state_dict(),
                 'best_prec1': None,
