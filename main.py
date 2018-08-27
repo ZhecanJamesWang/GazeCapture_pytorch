@@ -224,7 +224,7 @@ class Gaze(object):
 			train_loss.append(loss.data[0])
 
 
-			if i % 10 == 0:
+			if i % 30 == 0:
 				train_loss_mean = np.mean(train_loss)
 				print ("train_loss: ", train_loss_mean)
 				(prec1, val_error) = self.validate(val_loader, model, criterion, epoch)
@@ -304,12 +304,11 @@ class Gaze(object):
 
 			# if i % 10 == 0:
 		print ("val_loss: ", np.mean(val_loss))
-		print('Epoch (val): [{0}][{1}/{2}]\t'
+		print('Epoch (val):
 				  'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
 				  'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
 				  'Error L2 {lossLin.val:.4f} ({lossLin.avg:.4f})\t'.format(
-					epoch, i, len(val_loader), batch_time=batch_time,
-				   loss=losses,lossLin=lossesLin))
+				  batch_time=batch_time,loss=losses,lossLin=lossesLin))
 			# i += 1
 		print ("val_loss: ", np.mean(val_loss))
 		return (lossesLin.avg, np.mean(val_loss))
