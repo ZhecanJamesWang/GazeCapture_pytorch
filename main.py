@@ -16,6 +16,7 @@ from ITrackerData import ITrackerData
 from ITrackerModel import ITrackerModel
 import datetime
 import os
+import matplotlib.pyplot as plt
 
 '''
 Train/test code for iTracker.
