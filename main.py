@@ -70,7 +70,7 @@ class Gaze(object):
 
 		self.workers = 8
 		self.epochs = 100
-		self.batch_size = 10
+		self.batch_size = 100
 		# torch.cuda.device_count()*100 # Change if out of cuda memory
 		# batch_size = 10
 		self.base_lr = 0.0001
@@ -242,20 +242,9 @@ class Gaze(object):
 						   epoch, i, len(train_loader), batch_time=batch_time,
 						   data_time=data_time, loss=losses))
 
-				print ("prec1.item: ", prec1.item())
-				print ("prec1: ", prec1.data[0])
-				print ("prec1: ", prec1[0])
-
-				print (type(prec1))
-
 				self.train_loss_his.append(train_loss_mean)
 				self.val_error_his.append(val_error)
-				self.prec1_his.append(prec1)
-
-				print (self.train_loss_his[:10])
-				print (self.val_error_his[:10])
-				print (self.prec1_his[:10])
-				raise "debug"
+				self.prec1_his.append(prec1.item())
 
 				self.plot_loss(self.train_loss_his, self.val_error_his, self.prec1_his, save_file = self.plot_ckpt + "/cumul_loss_" + str(epoch) + "_" + str(i) + ".png")
 
