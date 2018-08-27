@@ -241,11 +241,11 @@ class Gaze(object):
 						   epoch, i, len(train_loader), batch_time=batch_time,
 						   data_time=data_time, loss=losses))
 
-				train_loss_his.append(train_loss_mean)
-				val_error_his.append(val_error)
-				prec1_his.append(prec1)
+				self.train_loss_his.append(train_loss_mean)
+				self.val_error_his.append(val_error)
+				self.prec1_his.append(prec1)
 
-				self.plot_loss(train_loss_his, val_error_his, prec1_his, save_file = self.plot_ckpt + "/cumul_loss_" + str(epoch) + "_" + str(i) + ".png")
+				self.plot_loss(self.train_loss_his, self.val_error_his, self.prec1_his, save_file = self.plot_ckpt + "/cumul_loss_" + str(epoch) + "_" + str(i) + ".png")
 
 	def validate(self, val_loader, model, criterion, epoch):
 		print ("----validate----")
