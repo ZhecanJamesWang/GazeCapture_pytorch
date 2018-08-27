@@ -143,7 +143,7 @@ class Gaze(object):
         # Quick test
         if self.doTest:
             print ("validate: ")
-            validate(val_loader, model, criterion, epoch)
+            self.validate(val_loader, model, criterion, epoch)
             return
 
         # for epoch in range(0, epoch):
@@ -154,10 +154,10 @@ class Gaze(object):
             self.adjust_learning_rate(optimizer, epoch)
 
             # train for one epoch
-            train(train_loader, model, criterion, optimizer, epoch, val_loader)
+            self.train(train_loader, model, criterion, optimizer, epoch, val_loader)
 
             # evaluate on validation set
-            (prec1, val_error) = validate(val_loader, model, criterion, epoch)
+            (prec1, val_error) = self.validate(val_loader, model, criterion, epoch)
 
             # remember best prec@1 and save checkpoint
             is_best = prec1 < self.best_prec1
@@ -169,7 +169,7 @@ class Gaze(object):
             })
 
 
-    def train(train_loader, model, criterion, optimizer, epoch, val_loader):
+    def train(self, train_loader, model, criterion, optimizer, epoch, val_loader):
         # global count
         batch_time = AverageMeter()
         data_time = AverageMeter()
@@ -220,7 +220,7 @@ class Gaze(object):
             if i % 10 == 0:
                 train_loss_mean = np.mean(train_loss)
                 print ("train_loss: ", train_loss_mean)
-                (prec1, val_error) = validate(val_loader, model, criterion, epoch)
+                (prec1, val_error) = self.validate(val_loader, model, criterion, epoch)
 
                 save_checkpoint(False, epoch, i, prec1, val_error, {
                     'epoch': epoch + 1,
@@ -239,9 +239,9 @@ class Gaze(object):
                 val_error_his.append(val_error)
                 prec1_his.append(prec1)
 
-                plot_loss(train_loss_his, val_error_his, prec1_his, save_file = self.plot_ckpt + "/cumul_loss_" + str(epoch) + "_" + str(i) + ".png")
+                self.plot_loss(train_loss_his, val_error_his, prec1_his, save_file = self.plot_ckpt + "/cumul_loss_" + str(epoch) + "_" + str(i) + ".png")
 
-    def validate(val_loader, model, criterion, epoch):
+    def validate(self, val_loader, model, criterion, epoch):
         # global count_test
         batch_time = AverageMeter()
         data_time = AverageMeter()
@@ -303,7 +303,7 @@ class Gaze(object):
 
 
 
-    def load_checkpoint(filename='checkpoint.pth.tar'):
+    def load_checkpoint(self, filename='checkpoint.pth.tar'):
         filename = os.path.join(self.CHECKPOINTS_PATH, filename)
         print(filename)
         if not os.path.isfile(filename):
@@ -311,7 +311,7 @@ class Gaze(object):
         state = torch.load(filename)
         return state
 
-    def save_checkpoint(is_best, epoch, iter, prec1, val_error, state = None, filename='checkpoint.pth.tar'):
+    def save_checkpoint(self, is_best, epoch, iter, prec1, val_error, state = None, filename='checkpoint.pth.tar'):
         if not os.path.isdir(self.CHECKPOINTS_PATH):
             os.makedirs(self.CHECKPOINTS_PATH, 0o777)
         bestFilename = os.path.join(self.CHECKPOINTS_PATH, 'best_' + filename)
@@ -321,7 +321,7 @@ class Gaze(object):
             shutil.copyfile(filename, bestFilename)
 
 
-    def plot_loss(train_loss_his, val_error_his, prec1_his, start=0, per=1, save_file='loss.png'):
+    def plot_loss(self, train_loss_his, val_error_his, prec1_his, start=0, per=1, save_file='loss.png'):
     	idx = np.arange(start, len(train_loss_his), per)
     	fig, ax1 = plt.subplots()
     	lns1 = ax1.plot(idx, train_loss_his[idx], 'b-', alpha=1.0, label='train loss')
@@ -345,7 +345,7 @@ class Gaze(object):
     	plt.savefig(save_file)
     	# plt.show()
 
-    def adjust_learning_rate(optimizer, epoch):
+    def adjust_learning_rate(self, optimizer, epoch):
         """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
         self.lr = self.base_lr * (0.1 ** (epoch // 30))
         for param_group in optimizer.state_dict()['param_groups']:
