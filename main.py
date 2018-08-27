@@ -14,6 +14,8 @@ import torchvision.models as models
 
 from ITrackerData import ITrackerData
 from ITrackerModel import ITrackerModel
+import datetime
+import os
 
 '''
 Train/test code for iTracker.
@@ -57,6 +59,13 @@ lr = base_lr
 
 
 train_loss_his, prec1_his, val_error_his = [], [], []
+
+now = datetime.datetime.now()
+date = now.strftime("%Y-%m-%d-%H-%M")
+
+CHECKPOINTS_PATH = 'my_model/' + date + "/"
+if not os.path.exists(CHECKPOINTS_PATH):
+	os.makedirs(CHECKPOINTS_PATH)
 
 def main():
     global args, best_prec1, weight_decay, momentum
@@ -268,7 +277,7 @@ def validate(val_loader, model, criterion, epoch):
     print ("val_loss: ", np.mean(val_loss))
     return (lossesLin.avg, np.mean(val_loss))
 
-CHECKPOINTS_PATH = 'my_model/'
+
 
 def load_checkpoint(filename='checkpoint.pth.tar'):
     filename = os.path.join(CHECKPOINTS_PATH, filename)
