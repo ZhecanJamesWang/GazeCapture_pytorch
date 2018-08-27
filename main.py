@@ -325,7 +325,7 @@ class Gaze(object):
 		if not os.path.isdir(self.CHECKPOINTS_PATH):
 			os.makedirs(self.CHECKPOINTS_PATH, 0o777)
 		bestFilename = os.path.join(self.CHECKPOINTS_PATH, 'best_' + filename)
-		filename = os.path.join(self.CHECKPOINTS_PATH, str(epoch) + "_" + prec1 + "_" + val_error + str(iter) + "_" + filename)
+		filename = os.path.join(self.CHECKPOINTS_PATH, str(epoch) + "_" + str(prec1) + "_" + str(val_error) + str(iter) + "_" + filename)
 		torch.save(state, filename)
 		if is_best:
 			shutil.copyfile(filename, bestFilename)
