@@ -242,6 +242,9 @@ class Gaze(object):
 						   epoch, i, len(train_loader), batch_time=batch_time,
 						   data_time=data_time, loss=losses))
 
+			    print ("prec1: ", prec1)
+				print (type(prec1))
+				
 				self.train_loss_his.append(train_loss_mean)
 				self.val_error_his.append(val_error)
 				self.prec1_his.append(prec1)
