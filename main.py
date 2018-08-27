@@ -224,7 +224,7 @@ class Gaze(object):
 			train_loss.append(loss.data[0])
 
 
-			if i % 30 == 0:
+			if i % 50 == 0:
 				train_loss_mean = np.mean(train_loss)
 				print ("train_loss: ", train_loss_mean)
 				(prec1, val_error) = self.validate(val_loader, model, criterion, epoch)
