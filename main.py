@@ -133,7 +133,7 @@ class Gaze(object):
 
         criterion = nn.MSELoss().cuda()
 
-        optimizer = torch.optim.SGD(model.parameters(), lr,
+        optimizer = torch.optim.SGD(model.parameters(), self.lr,
                                     momentum=self.momentum,
                                     weight_decay=self.weight_decay)
 
