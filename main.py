@@ -61,6 +61,8 @@ class AverageMeter(object):
 class Gaze(object):
     """docstring for ."""
     def __init__(self):
+        print ("----init----")
+
         # Change there flags to control what happens.
         self.doLoad = False # Load checkpoint at the beginning
         self.doTest = False # Only run test, no training
@@ -90,8 +92,10 @@ class Gaze(object):
         	os.makedirs(self.CHECKPOINTS_PATH)
         if not os.path.exists(self.plot_ckpt):
         	os.makedirs(self.plot_ckpt)
+        print ("----finish init----")
 
     def main(self):
+        print ("----main----")
         # global args, best_prec1, weight_decay, momentum
 
         model = ITrackerModel()
@@ -170,6 +174,8 @@ class Gaze(object):
 
 
     def train(self, train_loader, model, criterion, optimizer, epoch, val_loader):
+        print ("----train----")
+
         # global count
         batch_time = AverageMeter()
         data_time = AverageMeter()
@@ -242,6 +248,8 @@ class Gaze(object):
                 self.plot_loss(train_loss_his, val_error_his, prec1_his, save_file = self.plot_ckpt + "/cumul_loss_" + str(epoch) + "_" + str(i) + ".png")
 
     def validate(self, val_loader, model, criterion, epoch):
+        print ("----validate----")
+
         # global count_test
         batch_time = AverageMeter()
         data_time = AverageMeter()
@@ -312,6 +320,8 @@ class Gaze(object):
         return state
 
     def save_checkpoint(self, is_best, epoch, iter, prec1, val_error, state = None, filename='checkpoint.pth.tar'):
+        print ("----save checkpoint----")
+
         if not os.path.isdir(self.CHECKPOINTS_PATH):
             os.makedirs(self.CHECKPOINTS_PATH, 0o777)
         bestFilename = os.path.join(self.CHECKPOINTS_PATH, 'best_' + filename)
@@ -322,7 +332,9 @@ class Gaze(object):
 
 
     def plot_loss(self, train_loss_his, val_error_his, prec1_his, start=0, per=1, save_file='loss.png'):
-    	idx = np.arange(start, len(train_loss_his), per)
+        print ("----plot loss----")
+
+        idx = np.arange(start, len(train_loss_his), per)
     	fig, ax1 = plt.subplots()
     	lns1 = ax1.plot(idx, train_loss_his[idx], 'b-', alpha=1.0, label='train loss')
     	ax1.set_xlabel('epochs')
@@ -346,6 +358,8 @@ class Gaze(object):
     	# plt.show()
 
     def adjust_learning_rate(self, optimizer, epoch):
+        print ("----adjust learning rate----")
+
         """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
         self.lr = self.base_lr * (0.1 ** (epoch // 30))
         for param_group in optimizer.state_dict()['param_groups']:
