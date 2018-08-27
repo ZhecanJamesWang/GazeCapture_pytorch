@@ -243,7 +243,9 @@ class Gaze(object):
 						   data_time=data_time, loss=losses))
 
 				print ("prec1: ", prec1)
+				print ("prec1: ", prec1.data[0])
 				print ("prec1: ", prec1[0])
+
 				print (type(prec1))
 
 				self.train_loss_his.append(train_loss_mean)
