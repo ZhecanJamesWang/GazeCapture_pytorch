@@ -242,14 +242,13 @@ class Gaze(object):
 						   epoch, i, len(train_loader), batch_time=batch_time,
 						   data_time=data_time, loss=losses))
 
-				print (prec1)
 				self.train_loss_his.append(int(train_loss_mean))
 				self.val_error_his.append(int(val_error))
 				self.prec1_his.append(int(prec1.item()))
 
-				print (self.train_loss_his[:10])
-				print (self.val_error_his[:10])
-				print (self.prec1_his[:10])
+				# print (self.train_loss_his[:10])
+				# print (self.val_error_his[:10])
+				# print (self.prec1_his[:10])
 
 				self.plot_loss(np.array(self.train_loss_his), np.array(self.val_error_his), np.array(self.prec1_his), save_file = self.plot_ckpt + "/cumul_loss_" + str(epoch) + "_" + str(i) + ".png")
 
