@@ -300,6 +300,7 @@ class Gaze(object):
 			batch_time.update(time.time() - end)
 			end = time.time()
 
+			print("loss.data[0]: ", loss.data[0])
 			val_loss.append(loss.data[0])
 
 			# if i % 10 == 0:
