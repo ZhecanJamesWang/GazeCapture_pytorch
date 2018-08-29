@@ -112,7 +112,7 @@ class Gaze(object):
 		print ("***** Trying to load model *****")
 		saved = self.load_checkpoint()
 		if saved:
-			print('Loading checkpoint for epoch %05d with error %.5f...' % (saved['epoch'], saved['best_prec1']))
+			# print('Loading checkpoint for epoch %05d with error %.5f...' % (saved['epoch'], saved['best_prec1']))
 			state = saved['state_dict']
 			try:
 				model.module.load_state_dict(state)
