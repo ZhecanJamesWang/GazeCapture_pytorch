@@ -65,7 +65,7 @@ class Gaze(object):
 		print ("----init----")
 
 		# Change there flags to control what happens.
-		self.doLoad = False # Load checkpoint at the beginning
+		self.doLoad = True # Load checkpoint at the beginning
 		self.doTest = False # Only run test, no training
 
 		self.workers = 8
@@ -300,23 +300,22 @@ class Gaze(object):
 			batch_time.update(time.time() - end)
 			end = time.time()
 
-			print("loss.data[0]: ", loss.data[0])
 			val_loss.append(loss.data[0])
 
 			# if i % 10 == 0:
-		print ("val_loss: ", np.mean(val_loss))
 		print('Epoch (val): Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
 				  'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
 				  'Error L2 {lossLin.val:.4f} ({lossLin.avg:.4f})\t'.format(
 				  batch_time=batch_time,loss=losses,lossLin=lossesLin))
 			# i += 1
-		print ("val_loss: ", np.mean(val_loss))
+
 		return (lossesLin.avg, np.mean(val_loss))
 
 
 
 	def load_checkpoint(self, filename='checkpoint.pth.tar'):
-		filename = os.path.join(self.CHECKPOINTS_PATH, filename)
+		# filename = os.path.join(self.CHECKPOINTS_PATH, filename)
+		filename = "my_model/3_7_3610900_checkpoint.pth"
 		print(filename)
 		if not os.path.isfile(filename):
 			return None
