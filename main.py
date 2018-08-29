@@ -107,7 +107,7 @@ class Gaze(object):
 
 		epoch = 0
 		if self.doLoad:
-			saved = load_checkpoint()
+			saved = self.load_checkpoint()
 			if saved:
 				print('Loading checkpoint for epoch %05d with error %.5f...' % (saved['epoch'], saved['best_prec1']))
 				state = saved['state_dict']
