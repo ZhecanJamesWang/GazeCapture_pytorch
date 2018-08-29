@@ -40,6 +40,8 @@ Booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}
 
 '''
 
+# 2 epochs 11050 iters 2018-08-26-23-10 batch_size = 100
+#
 
 class AverageMeter(object):
 	"""Computes and stores the average and current value"""
@@ -316,7 +318,7 @@ class Gaze(object):
 
 	def load_checkpoint(self, filename='checkpoint.pth.tar'):
 		# filename = os.path.join(self.CHECKPOINTS_PATH, filename)
-		filename = "my_model/3_7_3610900_checkpoint.pth"
+		filename = "my_model/2018-08-26-23-10/3_7_3610900_checkpoint.pth"
 		print(filename)
 		if not os.path.isfile(filename):
 			return None
