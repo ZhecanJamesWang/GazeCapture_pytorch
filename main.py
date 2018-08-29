@@ -320,7 +320,7 @@ class Gaze(object):
 		if not os.path.isfile(filename):
 			return None
 		state = torch.load(filename)
-		print ("----- finish loading checkpoint -----")
+		print (" ******* finish loading checkpoint ******* ")
 		return state
 
 	def save_checkpoint(self, is_best, epoch, iter, prec1, val_error, state = None, filename='checkpoint.pth.tar'):
