@@ -40,7 +40,8 @@ Booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}
 
 '''
 
-# 2 epochs 11050 iters 2018-08-26-23-10 batch_size = 100
+# 3 epochs 11050 iters 2018-08-26-23-10 batch_size = 100   lr = 0.0001
+#          11250 iters 2018-08-29-01-29 batch_size = 100   lr = 0.0001
 #
 
 class AverageMeter(object):
@@ -318,7 +319,9 @@ class Gaze(object):
 
 	def load_checkpoint(self, filename='checkpoint.pth.tar'):
 		# filename = os.path.join(self.CHECKPOINTS_PATH, filename)
-		filename = "my_model/2018-08-26-23-10/3_7_3610900_checkpoint.pth.tar"
+		# filename = "my_model/2018-08-26-23-10/3_7_3610900_checkpoint.pth.tar"
+		filename = "my_model/2018-08-29-01-29/4_7_3610900_checkpoint.pth.tar"
+
 		print(filename)
 		if not os.path.isfile(filename):
 			return None
@@ -368,7 +371,12 @@ class Gaze(object):
 		print ("----adjust learning rate----")
 
 		"""Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
-		self.lr = self.base_lr * (0.1 ** (epoch // 30))
+		# self.lr = self.base_lr * (0.1 ** (epoch // 30))
+		self.base_lr = 0.00001
+		# 0.0001
+		# 0.00001
+		self.lr = self.base_lr
+
 		for param_group in optimizer.state_dict()['param_groups']:
 			param_group['lr'] = self.lr
 
