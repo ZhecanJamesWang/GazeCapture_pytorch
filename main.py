@@ -41,7 +41,8 @@ Booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}
 '''
 
 # 3 epochs 11050 iters 2018-08-26-23-10 batch_size = 100   lr = 0.0001
-#          11250 iters 2018-08-29-01-29 batch_size = 100   lr = 0.0001
+#          11250 iters 2018-08-29-01-29 batch_size = 100   lr = 0.0001 （4th epoch）
+#         11250  iters 2018-08-29-23-30 batch_size = 100   lr = 0.00001 （5th epoch）
 #
 
 class AverageMeter(object):
@@ -76,7 +77,7 @@ class Gaze(object):
 		self.batch_size = 100
 		# torch.cuda.device_count()*100 # Change if out of cuda memory
 		# batch_size = 10
-		self.base_lr = 0.0001
+		self.base_lr = 0.01
 		self.momentum = 0.9
 		self.weight_decay = 1e-4
 		self.print_freq = 10
@@ -236,7 +237,7 @@ class Gaze(object):
 				self.save_checkpoint(False, epoch, i, int(prec1.item()), int(val_error), {
 					'epoch': epoch + 1,
 					'state_dict': model.state_dict(),
-					'best_prec1': None,
+					'best_prec1': prec1,
 				})
 
 				print('Epoch (train): [{0}][{1}/{2}]\t'
@@ -335,7 +336,7 @@ class Gaze(object):
 		if not os.path.isdir(self.CHECKPOINTS_PATH):
 			os.makedirs(self.CHECKPOINTS_PATH, 0o777)
 		bestFilename = os.path.join(self.CHECKPOINTS_PATH, 'best_' + filename)
-		filename = os.path.join(self.CHECKPOINTS_PATH, str(epoch) + "_" + str(prec1) + "_" + str(val_error) + str(iter) + "_" + filename)
+		filename = os.path.join(self.CHECKPOINTS_PATH, str(epoch) + "_"  + str(iter) + "_" + str(prec1) + "_" + str(val_error) + "_" + filename)
 		torch.save(state, filename)
 		if is_best:
 			shutil.copyfile(filename, bestFilename)
@@ -372,9 +373,10 @@ class Gaze(object):
 
 		"""Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
 		# self.lr = self.base_lr * (0.1 ** (epoch // 30))
-		self.base_lr = 0.00001
+		self.base_lr = 0.000001
 		# 0.0001
 		# 0.00001
+		# 0.000001
 		self.lr = self.base_lr
 
 		for param_group in optimizer.state_dict()['param_groups']:
