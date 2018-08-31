@@ -375,7 +375,7 @@ class Gaze(object):
 
 		"""Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
 		# self.lr = self.base_lr * (0.1 ** (epoch // 30))
-		self.base_lr = 0.000001
+		self.base_lr = 0.00001
 		# 0.0001
 		# 0.00001
 		# 0.000001
