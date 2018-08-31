@@ -228,6 +228,8 @@ class Gaze(object):
 
 			train_loss.append(loss.data[0])
 
+			print ("loss.data[0]: ", loss.data[0])
+
 
 			if i % 50 == 0:
 				train_loss_mean = np.mean(train_loss)
