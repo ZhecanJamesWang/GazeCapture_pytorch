@@ -237,7 +237,7 @@ class Gaze(object):
 				self.save_checkpoint(False, epoch, i, int(prec1.item()), int(val_error), {
 					'epoch': epoch + 1,
 					'state_dict': model.state_dict(),
-					'best_prec1': prec1,
+					'best_prec1': int(prec1.item()),
 				})
 
 				print('Epoch (train): [{0}][{1}/{2}]\t'
