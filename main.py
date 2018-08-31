@@ -322,8 +322,8 @@ class Gaze(object):
 
 	def load_checkpoint(self, filename='checkpoint.pth.tar'):
 		# filename = os.path.join(self.CHECKPOINTS_PATH, filename)
-		filename = "my_model/2018-08-26-23-10/3_7_3610900_checkpoint.pth.tar"
-		# filename = "my_model/2018-08-29-23-30/5_7_3311250_checkpoint.pth.tar"
+		# filename = "my_model/2018-08-26-23-10/3_7_3610900_checkpoint.pth.tar"
+		filename = "my_model/2018-08-29-23-30/5_7_3311250_checkpoint.pth.tar"
 
 		print(filename)
 		if not os.path.isfile(filename):
@@ -375,7 +375,7 @@ class Gaze(object):
 
 		"""Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
 		# self.lr = self.base_lr * (0.1 ** (epoch // 30))
-		self.base_lr = 0.00001
+		self.base_lr = 0.000001
 		# 0.0001
 		# 0.00001
 		# 0.000001
