@@ -43,7 +43,7 @@ Booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}
 # 3 epochs 11050 iters 2018-08-26-23-10 batch_size = 100   lr = 0.0001
 #          11250 iters 2018-08-29-01-29 batch_size = 100   lr = 0.0001 （4th epoch）
 #         11250  iters 2018-08-29-23-30 batch_size = 100   lr = 0.00001 （5th epoch）
-#
+#        ???????????????????????????????????????????????   lr = 0.000001
 
 class AverageMeter(object):
 	"""Computes and stores the average and current value"""
@@ -69,7 +69,7 @@ class Gaze(object):
 		print ("----init----")
 
 		# Change there flags to control what happens.
-		self.doLoad = True # Load checkpoint at the beginning
+		self.doLoad = False # Load checkpoint at the beginning
 		self.doTest = False # Only run test, no training
 
 		self.workers = 8
@@ -110,9 +110,9 @@ class Gaze(object):
 		cudnn.benchmark = True
 
 		epoch = 0
-		# if self.doLoad:
-		print ("***** Trying to load model *****")
-		saved = self.load_checkpoint()
+		if self.doLoad:
+			print ("***** Trying to load model *****")
+			saved = self.load_checkpoint()
 		if saved:
 			# print('Loading checkpoint for epoch %05d with error %.5f...' % (saved['epoch'], saved['best_prec1']))
 			state = saved['state_dict']
@@ -257,7 +257,7 @@ class Gaze(object):
 				# print (self.val_error_his[:10])
 				# print (self.prec1_his[:10])
 
-				self.plot_loss(np.array(self.train_loss_his), np.array(self.val_error_his), np.array(self.prec1_his), save_file = self.plot_ckpt + "/cumul_loss_" + str(epoch) + "_" + str(i) + ".png")
+				self.plot_loss(np.array(self.train_loss_his), np.array(self.val_error_his), np.array(self.prec1_his), save_file = self.plot_ckpt + "/cumul_loss_" + str(epoch) + "_" + str(i))
 
 	def validate(self, val_loader, model, criterion, epoch):
 		print ("----validate----")
@@ -348,26 +348,39 @@ class Gaze(object):
 		print ("----plot loss----")
 
 		idx = np.arange(start, len(train_loss_his), per)
+
 		fig, ax1 = plt.subplots()
+		label='train loss'
 		lns1 = ax1.plot(idx, train_loss_his[idx], 'b-', alpha=1.0, label='train loss')
 		ax1.set_xlabel('epochs')
 		# Make the y-axis label, ticks and tick labels match the line color.
 		ax1.set_ylabel('loss', color='b')
 		ax1.tick_params('y', colors='b')
+		ax1.legend(lns1, label, loc=0)
 
-		ax2 = ax1.twinx()
+		fig.tight_layout()
+		plt.savefig(save_file + "_loss" + ".png")
+
+		fig, ax2 = plt.subplots()
+		label='val error'
 		lns2 = ax2.plot(idx, val_error_his[idx], 'r-', alpha=1.0, label='val error')
+		ax2.set_ylabel('error', color='r')
+		ax2.tick_params('y', colors='r')
+		ax1.legend(lns2, label, loc=0)
+
+		fig.tight_layout()
+		plt.savefig(save_file + "_val_error" + ".png")
+
+
+		fig, ax2 = plt.subplots()
+		label='prec1'
 		lns3 = ax2.plot(idx, prec1_his[idx], 'g-', alpha=1.0, label='prec1')
 		ax2.set_ylabel('error', color='r')
 		ax2.tick_params('y', colors='r')
-
-		# added these three lines
-		lns = lns1 + lns2 + lns3
-		labs = [l.get_label() for l in lns]
-		ax1.legend(lns, labs, loc=0)
+		ax1.legend(lns3, label, loc=0)
 
 		fig.tight_layout()
-		plt.savefig(save_file)
+		plt.savefig(save_file + "_prec1" + ".png")
 		# plt.show()
 
 	def adjust_learning_rate(self, optimizer, epoch):
@@ -375,7 +388,7 @@ class Gaze(object):
 
 		"""Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
 		# self.lr = self.base_lr * (0.1 ** (epoch // 30))
-		self.base_lr = 0.000001
+		self.base_lr = 0.001
 		# 0.0001
 		# 0.00001
 		# 0.000001

@@ -8,6 +8,7 @@ import torch
 import numpy as np
 import re
 import pickle
+import cv2
 
 '''
 Data loader for the iTracker.
@@ -206,13 +207,33 @@ class ITrackerData(data.Dataset):
 		imEyeL = self.loadImage(imEyeLPath)
 		imEyeR = self.loadImage(imEyeRPath)
 
-		imFace = self.transformFace(imFace)
-		imEyeL = self.transformEyeL(imEyeL)
-		imEyeR = self.transformEyeR(imEyeR)
 
 		gaze = np.array([self.metadata['labelDotXCam'][index], self.metadata['labelDotYCam'][index]], np.float32)
 
 		faceGrid = self.makeGrid(self.metadata['labelFaceGrid'][index,:])
+
+		print gaze.shape
+		print gaze
+		y_x, y_y = gaze
+		increase = 3
+		y_x, y_y = - int(y_x * increase), int(y_y * increase)
+		# print (px, py)
+		print imFace.size
+		h, w, _ = imFace.shape
+		cx, cy = w/2.0, h/2.0
+		cv2.circle(imFace,(int(cx), int(cy)), 5, (0,0,255), -1)
+		cv2.line(imFace, (int(cx), int(cy)), (int(cx + y_x), int(cy + y_y)), (255, 0, 0), 3)
+
+		cv2.imwrite("images/" + dir + "_" + frame + "_face.png", imFace)
+		cv2.imwrite("images/" + dir + "_" + frame + "_right.png", imEyeR)
+		cv2.imwrite("images/" + dir + "_" + frame + "_left.png", imEyeL)
+		cv2.imwrite("images/" + dir + "_" + frame + "_faceGrid.png", faceGrid)
+		cv2.imwrite("images/" + dir + "_" + frame + "_image.png", img)
+
+
+		imFace = self.transformFace(imFace)
+		imEyeL = self.transformEyeL(imEyeL)
+		imEyeR = self.transformEyeR(imEyeR)
 
 		# to tensor
 		row = torch.LongTensor([int(index)])
