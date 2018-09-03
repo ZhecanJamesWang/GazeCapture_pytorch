@@ -229,7 +229,7 @@ class Gaze(object):
 
 			train_loss.append(loss.data[0])
 
-			print ("loss.data[0]: ", loss.data[0])
+			# print ("loss.data[0]: ", loss.data[0])
 
 
 			if i % 30 == 0:
