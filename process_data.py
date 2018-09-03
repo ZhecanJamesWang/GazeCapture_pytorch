@@ -75,8 +75,8 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 				int(right_json["X"][idx]) < 0 or int(right_json["Y"][idx]) < 0:
 				# print("Error with coordinates: {}".format(join(path, dir, "frames", frame)))
 				continue
-			print ("check: ", join(path, dir, "appleFace", frame))
-			print ("Processing !!!!!!!!!")
+			# print ("check: ", join(path, dir, "appleFace", frame))
+			# print ("Processing !!!!!!!!!")
 
 			# get face
 			tl_x_face = int(face_json["X"][idx])
@@ -131,7 +131,7 @@ def load_batch_from_data(names, path, batch_size, img_ch, img_cols, img_rows, tr
 			cv2.imwrite(join(path, dir, "appleFace", frame), face)
 			cv2.imwrite(join(path, dir, "appleRightEye", frame), right_eye)
 			cv2.imwrite(join(path, dir, "appleLeftEye", frame), left_eye)
-			print ("finish saving")
+			# print ("finish saving")
 			# cv2.imwrite("images/image.png", img)
 			# raise "debug"
 
@@ -156,10 +156,10 @@ img_cols = 64
 img_rows = 64
 img_ch = 3
 
-dataset_path = "..\..\Eye-Tracking-for-Everyone-master\Eye-Tracking-for-Everyone-master\GazeCapture"
-train_path = dataset_path + '\ '.strip() + "train"
-val_path = dataset_path + '\ '.strip() + "validation"
-test_path = dataset_path + '\ '.strip() + "test"
+dataset_path = "../data/GazeCapture"
+train_path = dataset_path + '/' + "train"
+val_path = dataset_path + '/' + "validation"
+test_path = dataset_path + '/' + "test"
 
 
 train_names = load_data_names(train_path)
