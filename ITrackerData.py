@@ -232,9 +232,9 @@ class ITrackerData(data.Dataset):
 		cv2.circle(imFace,(int(cx), int(cy)), 5, (0,0,255), -1)
 		cv2.line(imFace, (int(cx), int(cy)), (int(cx + y_x), int(cy + y_y)), (255, 0, 0), 3)
 
-		cv2.imwrite("images/" + dir + "_" + frame + "_face.png", imFace)
-		cv2.imwrite("images/" + dir + "_" + frame + "_right.png", imEyeR)
-		cv2.imwrite("images/" + dir + "_" + frame + "_left.png", imEyeL)
+		cv2.imwrite("images/" + str(index) + "_face.png", imFace)
+		cv2.imwrite("images/" + str(index) + "_right.png", imEyeR)
+		cv2.imwrite("images/" + str(index) + "_left.png", imEyeL)
 
 
 		imFace = self.transformFace(imFace)
