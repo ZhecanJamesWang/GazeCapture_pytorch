@@ -77,7 +77,7 @@ class Gaze(object):
 		self.batch_size = 100
 		# torch.cuda.device_count()*100 # Change if out of cuda memory
 		# batch_size = 10
-		self.base_lr = 0.01
+		self.base_lr = None
 		self.momentum = 0.9
 		self.weight_decay = 1e-4
 		self.print_freq = 10
@@ -232,7 +232,7 @@ class Gaze(object):
 			print ("loss.data[0]: ", loss.data[0])
 
 
-			if i % 50 == 0:
+			if i % 30 == 0:
 				train_loss_mean = np.mean(train_loss)
 				print ("train_loss: ", train_loss_mean)
 				(prec1, val_error) = self.validate(val_loader, model, criterion, epoch)
@@ -389,7 +389,7 @@ class Gaze(object):
 
 		"""Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
 		# self.lr = self.base_lr * (0.1 ** (epoch // 30))
-		self.base_lr = 0.001
+		self.base_lr = 0.0001
 		# 0.0001
 		# 0.00001
 		# 0.000001
