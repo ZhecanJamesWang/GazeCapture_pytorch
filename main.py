@@ -77,7 +77,7 @@ class Gaze(object):
 		self.batch_size = 100
 		# torch.cuda.device_count()*100 # Change if out of cuda memory
 		# batch_size = 10
-		self.base_lr = 0.0001
+		self.base_lr = 0.001
 		self.momentum = 0.9
 		self.weight_decay = 1e-4
 		self.print_freq = 10
