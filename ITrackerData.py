@@ -126,6 +126,12 @@ class ITrackerData(data.Dataset):
 
 		# self.check_indices(split)
 
+	def convert_image_cv(self, img):
+		open_cv_image = np.array(img)
+		# Convert RGB to BGR
+		open_cv_image = open_cv_image[:, :, ::-1].copy()
+		return open_cv_image
+
 	def loadImage(self, path):
 		try:
 			im = Image.open(path).convert('RGB')
@@ -216,6 +222,12 @@ class ITrackerData(data.Dataset):
 		increase = 3
 		y_x, y_y = - int(y_x * increase), int(y_y * increase)
 		h, w = imFace.size
+
+
+		imFace = convert_image_cv(imFace)
+		imEyeL = convert_image_cv(imEyeL)
+		imEyeR = convert_image_cv(imEyeR)
+
 		cx, cy = w/2.0, h/2.0
 		cv2.circle(imFace,(int(cx), int(cy)), 5, (0,0,255), -1)
 		cv2.line(imFace, (int(cx), int(cy)), (int(cx + y_x), int(cy + y_y)), (255, 0, 0), 3)
@@ -223,8 +235,6 @@ class ITrackerData(data.Dataset):
 		cv2.imwrite("images/" + dir + "_" + frame + "_face.png", imFace)
 		cv2.imwrite("images/" + dir + "_" + frame + "_right.png", imEyeR)
 		cv2.imwrite("images/" + dir + "_" + frame + "_left.png", imEyeL)
-		cv2.imwrite("images/" + dir + "_" + frame + "_faceGrid.png", faceGrid)
-		cv2.imwrite("images/" + dir + "_" + frame + "_image.png", img)
 
 
 		imFace = self.transformFace(imFace)
