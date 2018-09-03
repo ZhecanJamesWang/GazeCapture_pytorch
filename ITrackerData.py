@@ -229,8 +229,8 @@ class ITrackerData(data.Dataset):
 		imEyeR_cv = self.convert_image_cv(imEyeR)
 
 		cx, cy = w/2.0, h/2.0
-		cv2.circle(imFace,(int(cx), int(cy)), 5, (0,0,255), -1)
-		cv2.line(imFace, (int(cx), int(cy)), (int(cx + y_x), int(cy + y_y)), (255, 0, 0), 3)
+		cv2.circle(imFace_cv,(int(cx), int(cy)), 5, (0,0,255), -1)
+		cv2.line(imFace_cv, (int(cx), int(cy)), (int(cx + y_x), int(cy + y_y)), (255, 0, 0), 3)
 
 		cv2.imwrite("images/" + str(index) + "_face.png", imFace_cv)
 		cv2.imwrite("images/" + str(index) + "_right.png", imEyeR_cv)
