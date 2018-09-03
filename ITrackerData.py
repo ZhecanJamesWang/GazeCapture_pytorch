@@ -224,9 +224,9 @@ class ITrackerData(data.Dataset):
 		h, w = imFace.size
 
 
-		imFace = convert_image_cv(imFace)
-		imEyeL = convert_image_cv(imEyeL)
-		imEyeR = convert_image_cv(imEyeR)
+		imFace = self.convert_image_cv(imFace)
+		imEyeL = self.convert_image_cv(imEyeL)
+		imEyeR = self.convert_image_cv(imEyeR)
 
 		cx, cy = w/2.0, h/2.0
 		cv2.circle(imFace,(int(cx), int(cy)), 5, (0,0,255), -1)
