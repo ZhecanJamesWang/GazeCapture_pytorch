@@ -212,14 +212,10 @@ class ITrackerData(data.Dataset):
 
 		faceGrid = self.makeGrid(self.metadata['labelFaceGrid'][index,:])
 
-		print (gaze.shape)
-		print (gaze)
 		y_x, y_y = gaze
 		increase = 3
 		y_x, y_y = - int(y_x * increase), int(y_y * increase)
-		# print (px, py)
-		print (imFace.size)
-		h, w, _ = imFace.shape
+		h, w = imFace.size
 		cx, cy = w/2.0, h/2.0
 		cv2.circle(imFace,(int(cx), int(cy)), 5, (0,0,255), -1)
 		cv2.line(imFace, (int(cx), int(cy)), (int(cx + y_x), int(cy + y_y)), (255, 0, 0), 3)
