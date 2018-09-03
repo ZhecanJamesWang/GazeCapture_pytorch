@@ -110,6 +110,7 @@ class Gaze(object):
 		cudnn.benchmark = True
 
 		epoch = 0
+		saved = None
 		if self.doLoad:
 			print ("***** Trying to load model *****")
 			saved = self.load_checkpoint()
