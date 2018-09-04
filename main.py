@@ -40,11 +40,14 @@ Booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}
 
 '''
 
+-------------------------------------------------------------------------------------
 # 3 epochs 11050 iters 2018-08-26-23-10 batch_size = 100   lr = 0.0001
 #          11250 iters 2018-08-29-01-29 batch_size = 100   lr = 0.0001 （4th epoch）
 #         11250  iters 2018-08-29-23-30 batch_size = 100   lr = 0.00001 （5th epoch）
 #        ???????????????????????????????????????????????   lr = 0.000001
-
+-------------------------------------------------------------------------------------
+#10 epochs 34800 iters 2018-09-02-23-32 batch_size = 100    lr = 0.0001
+	                                                      # lr = 0.00001
 class AverageMeter(object):
 	"""Computes and stores the average and current value"""
 	def __init__(self):
@@ -77,7 +80,7 @@ class Gaze(object):
 		self.batch_size = 100
 		# torch.cuda.device_count()*100 # Change if out of cuda memory
 		# batch_size = 10
-		self.base_lr = 0.0001
+		self.base_lr = 0.00001
 		self.momentum = 0.9
 		self.weight_decay = 1e-4
 		self.print_freq = 10
@@ -393,7 +396,7 @@ class Gaze(object):
 		# 0.0001
 		# 0.00001
 		# 0.000001
-		self.lr = self.base_lr
+		# self.lr = self.base_lr
 
 		for param_group in optimizer.state_dict()['param_groups']:
 			param_group['lr'] = self.lr
