@@ -47,7 +47,8 @@ Booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}
 #        ???????????????????????????????????????????????   lr = 0.000001
 -------------------------------------------------------------------------------------
 #10 epochs 34800 iters 2018-09-02-23-32 batch_size = 100    lr = 0.0001
-	                                                      # lr = 0.00001
+# 7 epochs 8970  iters 2018-09-04-00-41 batch_size = 100    lr = 0.00001
+
 class AverageMeter(object):
 	"""Computes and stores the average and current value"""
 	def __init__(self):
@@ -80,7 +81,7 @@ class Gaze(object):
 		self.batch_size = 100
 		# torch.cuda.device_count()*100 # Change if out of cuda memory
 		# batch_size = 10
-		self.base_lr = 0.00001
+		self.base_lr = 0.000001
 		self.momentum = 0.9
 		self.weight_decay = 1e-4
 		self.print_freq = 10
@@ -327,7 +328,7 @@ class Gaze(object):
 	def load_checkpoint(self, filename='checkpoint.pth.tar'):
 		# filename = os.path.join(self.CHECKPOINTS_PATH, filename)
 		# filename = "my_model/2018-08-26-23-10/3_7_3610900_checkpoint.pth.tar"
-		filename = "my_model/2018-08-29-23-30/5_7_3311250_checkpoint.pth.tar"
+		filename = "my_model/2018-09-04-00-41/7_9780_7_35_checkpoint.pth.tar"
 
 		print(filename)
 		if not os.path.isfile(filename):
